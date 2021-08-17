@@ -6,6 +6,7 @@ export class Dropdown {
   constructor(id, category) {
     this.id = id // ingredients || appliances || ustensils
     this.category = category // Ingrédients || Appareils || Ustensiles
+    this.filters = []
     this.list = this.setList(id);
     this.createHTML();
   }
@@ -28,6 +29,41 @@ export class Dropdown {
             </details>`;
   }
 
+  // createDOM() {
+  //   let details = document.createElement('details');
+  //   details.className = 'dropdown';
+  //   details.classList.add(this.id + '-dropdown');
+
+  //   let summary = document.createElement('summary');
+  //   summary.innerHTML = this.category + '<img src="./ressources/Arrow.png"></img>';
+
+  //   let input = document.createElement('input');
+  //   input.setAttribute('id', 'search-'+ this.id);
+  //   input.setAttribute('type', 'text');
+  //   input.setAttribute('placeholder', 'Recherche un ' + this.category.substring(0, this.category.length - 1));
+
+  //   let arrow = document.createElement('img');
+  //   arrow.className = 'arrow-up';
+  //   arrow.setAttribute('src', './ressources/Arrow.png');
+
+  //   let searchSection = document.createElement('div');
+  //   searchSection.className = 'dropdown-search-section';
+  //   searchSection.appendChild(input);
+  //   searchSection.appendChild(arrow);
+
+  //   let list = document.createElement('ul');
+  //   list.className = 'dropdown-list';
+  //   list.setAttribute('id', this.id + '-list');
+  //   list.innerHTML = this.list;
+
+  //   details.appendChild(summary);
+  //   details.appendChild(searchSection);
+  //   details.appendChild(list);
+
+  //   console.log(details);
+
+  // }
+
   /**
    * Créé le html pour la liste des dropdowns
    *
@@ -40,13 +76,13 @@ export class Dropdown {
     let list = [];
     switch (category) {
       case 'ingredients': 
-        list = this.getFullList("ingredients");
+        if (this.filters.length == 0) list = this.getFullList("ingredients");
         break;
       case 'appliances':
-        list = this.getFullList("appliances");
+        if (this.filters.length == 0) list = this.getFullList("appliances");
         break;
       case 'ustensils': 
-        list = this.getFullList("ustensils");
+        if (this.filters.length == 0) list = this.getFullList("ustensils");
         break;
     }
     for (let i = 0; i < list.length; i++) {
@@ -78,7 +114,8 @@ export class Dropdown {
       else if (category == "ustensils") {                   // Si l'argument est "ustensils":
         let ustensilsArray = recipes[i].ustensils;            // → on récupère le tableau ustensils
         for (let i=0; i < ustensilsArray.length; i++) {       // → pour chaque ustensile dans le tableau
-          fullList.push(ustensilsArray[i]);                   // → on ajoute l'ustensile à la liste
+          fullList.push(ustensilsArray[i][0].toUpperCase()    // → on ajoute l'ustensile à la liste (et on met la première lettre en majuscule)
+          + ustensilsArray[i].substring(1));                  
         }
       }
     }

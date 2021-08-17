@@ -1,4 +1,5 @@
 import { recipes } from "./data.js";
+import { Dropdown } from "./dropdown.js";
 import { Homepage } from "./homepage.js";
 import { Research } from "./research.js";
 
@@ -14,6 +15,7 @@ homepage.createHomepage();
 const research = new Research();
 research.displayResults(recipes); //Par défaut, afficher toutes les recettes
 research.mainSearch();
+research.dropdownsSearch();
 
 // Ferme les dropdown qui ne sont pas la cible du clic
 const dropdowns = document.querySelectorAll('details');
@@ -24,7 +26,6 @@ dropdowns.forEach((targetDropdown) => {
     });
   });
 })
-
 
 
 
