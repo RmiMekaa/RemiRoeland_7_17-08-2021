@@ -156,7 +156,7 @@ input[type=search]::-webkit-search-results-decoration {
   cursor: pointer;
 }
 .recipe-card:hover {
-  box-shadow: 0px 5px 20px 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 5px 30px 5px rgba(0, 0, 0, 0.2);
 }
 
 .recipe-image {
