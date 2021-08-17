@@ -40,6 +40,12 @@ export class Homepage {
     label.appendChild(icon);
     main.appendChild(label);
 
+    // Création conteneur des tags
+
+    const tagSection = document.createElement('div');
+    tagSection.setAttribute('id', 'tagSection');
+    main.appendChild(tagSection);
+
     // Création dropdowns
     const ingredientsDropdown = new Dropdown("ingredients", "ingrédients");
     const appliancesDropdown = new Dropdown("appliances", "appareils");
