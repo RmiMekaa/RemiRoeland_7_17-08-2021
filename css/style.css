@@ -60,7 +60,7 @@ input[type=search]::-webkit-search-results-decoration {
 
 /*----- Dropdowns -----------------------------------------------------------------------*/
 .dropdowns-container {
-  margin-top: 20px;
+  margin-top: 15px;
   display: flex;
   flex-direction: row;
   gap: 20px;
@@ -227,6 +227,34 @@ input[type=search]::-webkit-search-results-decoration {
     grid-template-columns: 1fr;
     gap: 25px;
   }
+}
+/*------------------------------------Tags--------------------------------------------*/
+#tagSection {
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+  gap: 0.5rem;
+}
+#tagSection .tag {
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  height: 37px;
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+#tagSection .tag__ingredient {
+  background-color: #3282F7;
+}
+#tagSection .tag__appliance {
+  background-color: #68D9A4;
+}
+#tagSection .tag__ustensil {
+  background-color: #ED6454;
 }
 
 /*# sourceMappingURL=style.css.map */
