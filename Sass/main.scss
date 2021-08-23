@@ -12,6 +12,7 @@ p, h2, ul {
     margin: 0;
 }
 
+/*----- Header -----*/
 header {
     padding-top: 42px;
     margin-bottom: 17px;
@@ -60,7 +61,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 
 /*----- Dropdowns -----------------------------------------------------------------------*/
 
-.dropdowns-container {
+#dropdowns-container {
     margin-top: 15px;
     display: flex;
     flex-direction: row;
