@@ -232,7 +232,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 
 /*------------------------------------Tags--------------------------------------------*/
 
-#tagSection {
+#tags-container {
     margin-top: 25px;
     display: flex;
     flex-wrap: wrap;
@@ -248,13 +248,13 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
         color: white;
         padding: 0.25rem 0.5rem;
         border-radius: 0.25rem;
-        &__ingredient {
+        &__ingredients {
             background-color: $ingredient-color;
         }
-        &__appliance {
+        &__appliances {
             background-color: $appliance-color;
         }
-        &__ustensil {
+        &__ustensils {
             background-color: $ustensil-color;
         }
     }

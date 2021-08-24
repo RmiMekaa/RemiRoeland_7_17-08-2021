@@ -230,7 +230,7 @@ input[type=search]::-webkit-search-results-decoration {
   }
 }
 /*------------------------------------Tags--------------------------------------------*/
-#tagSection {
+#tags-container {
   margin-top: 25px;
   display: flex;
   flex-wrap: wrap;
@@ -238,7 +238,7 @@ input[type=search]::-webkit-search-results-decoration {
   padding: 0;
   gap: 0.5rem;
 }
-#tagSection .tag {
+#tags-container .tag {
   font-size: 14px;
   font-weight: 700;
   display: flex;
@@ -248,13 +248,13 @@ input[type=search]::-webkit-search-results-decoration {
   padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
 }
-#tagSection .tag__ingredient {
+#tags-container .tag__ingredients {
   background-color: #3282F7;
 }
-#tagSection .tag__appliance {
+#tags-container .tag__appliances {
   background-color: #68D9A4;
 }
-#tagSection .tag__ustensil {
+#tags-container .tag__ustensils {
   background-color: #ED6454;
 }
 
