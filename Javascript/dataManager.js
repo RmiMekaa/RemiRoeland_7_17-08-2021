@@ -2,13 +2,13 @@ import { recipes } from "./data.js";
 
 export class DataManager {
 
-  /**
-   * Retourne la liste complète des recettes
-   *
-   * @return  {Array.<object>} Le tableau contenant les recettes
-   */
-  getRecipes(){
-    return recipes;
+  constructor() {
+    this.recipes = recipes;
+    this.ingredients = this.getFullList('ingredients');
+    this.appliances = this.getFullList('appliances');
+    this.ustensils = this.getFullList('ustensils');
+
+    this.filters = [];
   }
 
   /**
@@ -28,8 +28,10 @@ export class DataManager {
           for (let i = 0; i < ingredientsArray.length; i++) {   // → pour chaque ingrédient dans le tableau
             fullList.push(ingredientsArray[i].ingredient);      // → on ajoute l'ingrédient à la liste
           }
+          break;
         case 'appliances' :
-          fullList.push(recipes[i].appliance);                  // → on ajoute l'appareil à la liste.       
+          fullList.push(recipes[i].appliance);                  // → on ajoute l'appareil à la liste.
+          break;
         case 'ustensils' :
           let ustensilsArray = recipes[i].ustensils;            // → on récupère le tableau ustensils
           for (let i = 0; i < ustensilsArray.length; i++) {     // → pour chaque ustensile dans le tableau
@@ -42,4 +44,17 @@ export class DataManager {
     fullList = [...mySet];    
     return fullList;
   }
+
+  getFilteredList(category) {
+    let list;
+    if (this.filters.length == 0) {
+      list = this[category];
+    }
+    else {
+      list = this[category].filter(item => {
+      return this.filters.includes(item)});
+    }
+    return list;
+  }
+
 }
