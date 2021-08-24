@@ -1,31 +1,35 @@
-import { recipes } from "./data.js";
-import { Dropdown } from "./dropdown.js";
-import { Homepage } from "./homepage.js";
 import { Research } from "./research.js";
+import { DataManager} from "./dataManager.js";
+import { Dropdown } from "./composants/dropdown.js";
+import { SearchInput } from "./composants/searchInput.js";
+import { Results } from "./composants/results.js";
 
-/* @type {Array} */
-recipes;
-console.log(recipes);
+const dataManager = new DataManager();
 
-// Création du DOM
-const homepage = new Homepage();
-homepage.createHomepage();
+// Création du DOM - Section recherche
+let searchSection = document.querySelector('section');
+new SearchInput(dataManager, searchSection);
+let tagContainer = document.createElement('div');
+tagContainer.setAttribute('id', 'tags-container')
+searchSection.appendChild(tagContainer);
+let dropdownsContainer = document.createElement('div');
+dropdownsContainer.setAttribute('id', 'dropdowns-container');
+searchSection.appendChild(dropdownsContainer);
+new Dropdown("ingredients", "ingrédients", dataManager.ingredients, dropdownsContainer);
+new Dropdown("appliances", "appareils", dataManager.appliances, dropdownsContainer);
+new Dropdown("ustensils", "ustensiles", dataManager.ustensils, dropdownsContainer);
+
+// Création du DOM - Section résultats
+let main = document.getElementsByTagName('main')[0];
+let resultsContainer = document.createElement('section');
+resultsContainer.setAttribute('id', 'recipes-container');
+main.appendChild(resultsContainer);
+new Results(dataManager.recipes);
 
 // Fonctionnalités de recherche
-const research = new Research();
-research.displayResults(recipes); //Par défaut, afficher toutes les recettes
-research.mainSearch();
-research.dropdownsSearch();
+new Research(dataManager);
 
-// Ferme les dropdown qui ne sont pas la cible du clic
-const dropdowns = document.querySelectorAll('details');
-dropdowns.forEach((targetDropdown) => {
-  targetDropdown.addEventListener("click", () => {
-    dropdowns.forEach((dropdown) => {
-      if (dropdown !== targetDropdown) dropdown.removeAttribute("open");
-    });
-  });
-})
+
 
 
 
