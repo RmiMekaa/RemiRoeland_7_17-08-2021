@@ -1,97 +1,73 @@
-import { recipes } from "./data.js";
-import { Recipe } from "./recipe.js";
+import { Results } from "./composants/results.js";
 
 export class Research {
 
-  /**
-   * @type {Array.<object>} Un tableau contenant toutes les recettes
-   */
-  recipes;
+  constructor(dataManager){
+    this.dataManager = dataManager;
+    this.recipes = dataManager.recipes;
+    this.ingredientsList = dataManager.ingredients;
+    this.appliancesList = dataManager.appliances;
+    this.ustensilsList = dataManager.ustensils;
 
-  /**
-   * Affiche les recettes à partir du tableau donné en argument
-   *
-   * @param   {array}  array  Un tableau contenant des recettes
-   *
-   * @return  {String}  Le html à afficher
-   */
-  displayResults(array) {
-    const recipesContainer = document.getElementById('recipes-container');
-    let recipe;
-    let html = "";
-    for (let i = 0; i < array.length; i++) {
-      recipe = new Recipe(array[i]);
-      html += recipe.recipeCardHtml();
-    }
-    recipesContainer.innerHTML = html;
+    this.results = this.recipes; //Par défaut, affichera toutes les recettes
+
+    this.mainSearch();
   }
   
   /**
-   * Recherche si la chaine entrée dans la barre de recerche est présente dans une des recettes
-   * @return  {void}  Affiche les résultats filtrés
+   * Recherche si la chaine entrée dans la barre de recherche est présente dans une des recettes et retourne un tableau
+   * @return  {Array.<object>}
    */
   mainSearch() {
     const searchBar = document.getElementById('searchBar');
     searchBar.addEventListener('keyup', () => {
       const searchString = searchBar.value.toLowerCase();
       if (searchBar.value.length > 2) {
-        const filteredRecipes = recipes.filter(recipe => {
+        const filteredRecipes = this.recipes.filter(recipe => {
           return (
             //recipe.ingredients[1].includes(searchString) ||
             recipe.name.toLowerCase().includes(searchString) ||
             recipe.description.toLowerCase().includes(searchString)
           )
         });
-        console.log(filteredRecipes);
-        this.displayResults(filteredRecipes);
+        this.results = filteredRecipes;
       }
-      if (searchBar.value.length < 3) { // Si la saisie fait moins de deux caractères, réafficher toutes les recettes
-        this.displayResults(recipes);
-      }
+      else this.results = this.recipes;
+      console.log('results :', this.results);
+      new Results(this.results);
     });
   }
 
-  dropdownsSearch() {
-    const page = this;
-    document.addEventListener('keyup', function(e) {
-      const searchString = e.target.value.toLowerCase();
-      let element = e.target;
-      let list;
-      switch (element.id) {
-        case 'search-ingredients':
-          list = Array.from(document.querySelectorAll('#ingredients-list li'));
-          break;
-        case 'search-appliances':
-          list = Array.from(document.querySelectorAll('#appliances-list li'));
-          break;
-        case 'search-ustensils':
-          list = Array.from(document.querySelectorAll('#ustensils-list li'));
-          break;      
-        default:
-          break;
-      }
-      if (e.target.value.length > 2) {
-        const filteredItems = list.filter(item => {
-          return (item.innerHTML.toLowerCase().includes(searchString))
-        })
-        console.log(filteredItems);
-        page.createTag(filteredItems);
+  // addTag() {
+  //   let tags = document.querySelectorAll('.dropdown li');
+  //   tags.forEach(tag => tag.addEventListener('click', function() {
+  //     if (this.dataManager.filters.indexOf(tag.textContent) == -1) this.dataManager.filters.push(tag.textContent);
+  //     else this.dataManager.filters.splice(this.dataManager.filters.indexOf(tag.textContent), 1)
+  //     console.log(this.dataManager.filters);
+  //   }))
+  // }
+  
+  // /**
+  //  * @param   {Array}  items   
+  //  * @param   {String}  category  [category description]
+  //  *
+  //  * @return  {void}   Créé le tag et l'insère dans le DOM
+  //  */
+  // createTag(items, category) {
+  //   items.forEach(element => {
+  //     let tag = document.createElement('li');
+  //     tag.innerText = element.textContent;
+  //     tag.className = 'tag';
 
-        return filteredItems;
-      }  
-    })  
-  }
+  //     switch(category) {
+  //       case 'ingredient': tag.classList.add('tag__ingredient'); break;
+  //       case 'appliance':  tag.classList.add('tag__appliance');  break;
+  //       case 'ustensil':   tag.classList.add('tag__ustensil');
+  //     }
+  //     document.getElementById('tagSection').appendChild(tag);   
+  //   });
 
-  createTag(items) {
-    let html ='';
-    items.forEach(element => {
-      html += '<li>' + element.textContent + '</li>'     
-    });
-    console.log(html);
-    document.getElementById('tagSection').innerHTML = html;
-
-  }
-
+  // }
 
 }
 
