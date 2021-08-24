@@ -1,15 +1,10 @@
 export class Dropdown {
 
-  constructor(id, category, dataManager, domTarget) {
+  constructor(id, category, list, domTarget) {
     this.id = id; // ingredients || appliances || ustensils
-    this.category = category; // Ingrédients || Appareils || Ustensiles
-    this.dataManager = dataManager;
+    this.category = category; // ingrédients || appareils || ustensiles
     this.domTarget = domTarget;
-
-    // TO DO : Filtrer les listes dans les dropdowns
-    // this.ingFilters = [];
-    // this.appFilters = [];
-    // this.ustFilters = [];
+    this.list = list;
     
     this.DOM = document.createElement('details');
     this.DOM.className = `dropdown ${this.id}-dropdown`;
@@ -17,6 +12,8 @@ export class Dropdown {
     domTarget.appendChild(this.DOM);
 
     this.dropdownTrigger();
+    this.filterDropdownList();
+    this.createTag();
   }
 
   /**
@@ -31,34 +28,17 @@ export class Dropdown {
                 <img class="arrow-up" src="./ressources/Arrow.png">
               </div>
               <ul id="${this.id}-list" class="dropdown-list">
-                ${this.setList(this.id)}
+                ${this.setList()}
               </ul>`;
   }
 
   /**
-   * Retourne la liste voulue au format HTML
-   *
-   * @param   {string}  category  la catégorie souhaitée
-   *
-   * @return  {string}  HTML String
+   * Convertit la liste en HTML
+   * @return  {String}  HTML String
    */
-  setList(category) {
+  setList() {
     let html = '';
-    let list = [];
-    switch (category) {
-      case 'ingredients': 
-        list = this.dataManager.getFullList("ingredients");
-        list.forEach(item => { html += '<li class="list-ingredient">' + item + '</li>' });
-        break;
-      case 'appliances':
-        list = this.dataManager.getFullList("appliances");
-        list.forEach(item => { html += '<li class="list-appliance">' + item + '</li>' });
-        break;
-      case 'ustensils': 
-        list = this.dataManager.getFullList("ustensils");
-        list.forEach(item => { html += '<li class="list-ustensil">' + item + '</li>' });
-        break;
-    }
+    this.list.forEach(item => { html += '<li>' + item + '</li>' });
     return html;
   }
 
@@ -75,6 +55,38 @@ export class Dropdown {
         });
       });
     })
+  }
+
+  /**
+   * Affiche les éléments de la liste correspondants à la recherche
+   * @return  {void}  [return description]
+   */
+  filterDropdownList() {
+    let listElements = this.DOM.querySelectorAll('li');
+    document.addEventListener('keyup', function(e) {
+      const searchString = e.target.value.toLowerCase();
+      if (e.target.value.length > 2) {
+        listElements.forEach(el => {
+          if (!el.textContent.toLowerCase().includes(searchString)) el.style.display = 'none';
+        })
+      }
+      else listElements.forEach(el => el.style.display = 'inline');
+    })  
+  }
+
+  /**
+   * Déplace l'élément de la liste dans la section tags au clic
+   * @return  {void}
+   */
+  createTag() {
+    const dropdown = this;
+    const tagContainer = document.getElementById('tags-container');
+    let listElements = this.DOM.querySelectorAll('li');
+    listElements.forEach(el => el.addEventListener('click', function(){
+      tagContainer.appendChild(el);
+      el.className = 'tag';
+      el.classList.add(`tag__${dropdown.id}`)
+    }))
   }
 
 }
