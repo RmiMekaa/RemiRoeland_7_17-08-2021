@@ -246,8 +246,17 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
         align-items: center;
         height: 37px;
         color: white;
-        padding: 0.25rem 0.5rem;
+        padding: 0.25rem 1rem;
         border-radius: 0.25rem;
+        cursor: pointer;
+        &::after {
+            display: block;
+            font-family: "Font Awesome 5 Free";
+            font-weight: normal;
+            font-size: 1.1rem;
+            content: '\f057';
+            margin-left: 10px;
+        }
         &__ingredients {
             background-color: $ingredient-color;
         }
