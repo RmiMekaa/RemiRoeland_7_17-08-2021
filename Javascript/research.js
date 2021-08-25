@@ -38,37 +38,6 @@ export class Research {
     });
   }
 
-  // addTag() {
-  //   let tags = document.querySelectorAll('.dropdown li');
-  //   tags.forEach(tag => tag.addEventListener('click', function() {
-  //     if (this.dataManager.filters.indexOf(tag.textContent) == -1) this.dataManager.filters.push(tag.textContent);
-  //     else this.dataManager.filters.splice(this.dataManager.filters.indexOf(tag.textContent), 1)
-  //     console.log(this.dataManager.filters);
-  //   }))
-  // }
-  
-  // /**
-  //  * @param   {Array}  items   
-  //  * @param   {String}  category  [category description]
-  //  *
-  //  * @return  {void}   Créé le tag et l'insère dans le DOM
-  //  */
-  // createTag(items, category) {
-  //   items.forEach(element => {
-  //     let tag = document.createElement('li');
-  //     tag.innerText = element.textContent;
-  //     tag.className = 'tag';
-
-  //     switch(category) {
-  //       case 'ingredient': tag.classList.add('tag__ingredient'); break;
-  //       case 'appliance':  tag.classList.add('tag__appliance');  break;
-  //       case 'ustensil':   tag.classList.add('tag__ustensil');
-  //     }
-  //     document.getElementById('tagSection').appendChild(tag);   
-  //   });
-
-  // }
-
 }
 
 
