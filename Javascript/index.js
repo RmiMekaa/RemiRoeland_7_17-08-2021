@@ -15,9 +15,9 @@ searchSection.appendChild(tagContainer);
 let dropdownsContainer = document.createElement('div');
 dropdownsContainer.setAttribute('id', 'dropdowns-container');
 searchSection.appendChild(dropdownsContainer);
-new Dropdown("ingredients", "ingrédients", dataManager.ingredients, dropdownsContainer);
-new Dropdown("appliances", "appareils", dataManager.appliances, dropdownsContainer);
-new Dropdown("ustensils", "ustensiles", dataManager.ustensils, dropdownsContainer);
+new Dropdown("ingredients", dataManager.ingredients, dropdownsContainer);
+new Dropdown("appliances", dataManager.appliances, dropdownsContainer);
+new Dropdown("ustensils", dataManager.ustensils, dropdownsContainer);
 
 // Création du DOM - Section résultats
 let main = document.getElementsByTagName('main')[0];
