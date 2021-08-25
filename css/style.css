@@ -13,8 +13,8 @@ p, h2, ul {
 
 /*----- Header -----*/
 header {
-  padding-top: 42px;
-  margin-bottom: 17px;
+  padding-top: 2.6rem;
+  margin-bottom: 1.1rem;
   text-align: center;
 }
 header a {
@@ -24,7 +24,7 @@ header h1 {
   margin: 0;
   color: #D04F4F;
   font-weight: 700;
-  font-size: 36px;
+  font-size: 2.25rem;
 }
 
 /*----- SearchBar -----*/
@@ -33,13 +33,13 @@ header h1 {
 }
 .search-section input {
   width: 100%;
-  height: 69px;
+  height: 4.3rem;
   background-color: #E7E7E7;
   border: none;
-  padding: 22px;
+  padding: 1.4rem;
   outline: none;
   border-radius: 0.3rem;
-  font-size: 18px;
+  font-size: 1.125rem;
   color: black;
 }
 .search-section .search-icon {
@@ -61,19 +61,19 @@ input[type=search]::-webkit-search-results-decoration {
 
 /*----- Dropdowns -----------------------------------------------------------------------*/
 #dropdowns-container {
-  margin-top: 15px;
+  margin-top: 1rem;
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  gap: 1.25rem;
   width: 100%;
   color: white;
 }
 #dropdowns-container .dropdown {
-  font-size: 18px;
+  font-size: 1.125rem;
   width: fit-content;
-  min-width: 170px;
+  min-width: 10.6rem;
   height: fit-content;
-  border-radius: 5px;
+  border-radius: 0.3rem;
   font-weight: bold;
 }
 #dropdowns-container summary {
@@ -91,7 +91,7 @@ input[type=search]::-webkit-search-results-decoration {
   padding-right: 1rem;
 }
 #dropdowns-container .dropdown-search-section input {
-  font-size: 18px;
+  font-size: 1.125rem;
   background-color: transparent;
   border: none;
   color: white;
@@ -127,8 +127,8 @@ input[type=search]::-webkit-search-results-decoration {
   padding: 0 1rem 1rem 1rem;
   list-style: none;
   display: grid;
-  row-gap: 10px;
-  column-gap: 100px;
+  row-gap: 0.6rem;
+  column-gap: 6.25rem;
   grid-template-columns: 1fr 1fr 1fr;
 }
 .dropdown-list li {
@@ -142,16 +142,16 @@ input[type=search]::-webkit-search-results-decoration {
 
 /*----- Recipes --------------------------------------------------------------------------*/
 #recipes-container {
-  margin: 50px 0 100px 0;
+  margin: 3.1rem 0 6.2rem 0;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: 50px;
+  gap: 3.1rem;
 }
 
 .recipe-card {
   display: flex;
   flex-direction: column;
-  height: 364px;
+  height: 22.75rem;
   border-radius: 0.3rem;
   overflow: hidden;
   cursor: pointer;
@@ -170,25 +170,25 @@ input[type=search]::-webkit-search-results-decoration {
   flex-direction: row;
   flex-wrap: wrap;
   column-gap: 6%;
-  height: 186px;
+  height: 10.5rem;
   background-color: #E7E7E7;
-  font-size: 12px;
-  padding: 20px;
+  font-size: 0.75rem;
+  padding: 1.25rem;
 }
 .recipe-content__heading {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  line-height: 18px;
-  margin-bottom: 20px;
+  line-height: 1.125rem;
+  margin-bottom: 1.25rem;
 }
 .recipe-content__heading h2 {
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 .recipe-content__heading .duration {
   min-width: 25%;
   text-align: right;
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: bold;
 }
 .recipe-content__heading .duration::before {
@@ -220,18 +220,17 @@ input[type=search]::-webkit-search-results-decoration {
 @media all and (max-width: 1200px) {
   #recipes-container {
     grid-template-columns: 1fr 1fr;
-    gap: 25px;
+    gap: 1.6rem;
   }
 }
 @media all and (max-width: 780px) {
   #recipes-container {
     grid-template-columns: 1fr;
-    gap: 25px;
   }
 }
 /*------------------------------------Tags--------------------------------------------*/
 #tags-container {
-  margin-top: 25px;
+  margin-top: 0;
   display: flex;
   flex-wrap: wrap;
   list-style-type: none;
@@ -239,11 +238,12 @@ input[type=search]::-webkit-search-results-decoration {
   gap: 0.5rem;
 }
 #tags-container .tag {
-  font-size: 14px;
+  margin-top: 1rem;
+  font-size: 0.875rem;
   font-weight: 700;
   display: flex;
   align-items: center;
-  height: 37px;
+  height: 2.3rem;
   color: white;
   padding: 0.25rem 1rem;
   border-radius: 0.25rem;
@@ -255,7 +255,7 @@ input[type=search]::-webkit-search-results-decoration {
   font-weight: normal;
   font-size: 1.1rem;
   content: "";
-  margin-left: 10px;
+  margin-left: 0.6rem;
 }
 #tags-container .tag__ingredients {
   background-color: #3282F7;
