@@ -1,13 +1,13 @@
 export class Dropdown {
 
-  constructor(id, category, list, domTarget) {
-    this.id = id; // ingredients || appliances || ustensils
-    this.category = category; // ingrédients || appareils || ustensiles
-    this.domTarget = domTarget;
-    this.list = list;
-    
+  constructor(category, list, domTarget) {
+    this.category = category; // ingredients || appliances || ustensils
+    this.categorie = this.translate(category); // Le nom de la catégorie en français
+    this.list = list; // la liste correspondant à la catégorie
+    this.domTarget = domTarget; // la cible où injecter le dropdown
+
     this.DOM = document.createElement('details');
-    this.DOM.className = `dropdown ${this.id}-dropdown`;
+    this.DOM.className = `dropdown ${this.category}-dropdown`;
     this.DOM.innerHTML = this.createHTML();
     domTarget.appendChild(this.DOM);
 
@@ -17,17 +17,32 @@ export class Dropdown {
   }
 
   /**
+   * Traduit le nom de la categorie en français
+   * @param   {String}  category  Le nom de la catégorie en anglais
+   * @return  {String}  Le nom de la catégorie en français
+   */
+  translate(category) {
+    let translation;
+    switch (category) {
+      case 'ingredients': translation = 'ingrédients'; break;
+      case 'appliances' : translation = 'appareils';   break;
+      case 'ustensils'  : translation = 'ustensiles';  break;
+    }
+    return translation;
+  }
+
+  /**
    * Créé le html des dropdowns
    *
    * @return  {String}  HTML String
    */
   createHTML() {
-    return `<summary>${this.category}<img src="./ressources/Arrow.png"></summary>
+    return `<summary>${this.categorie}<img src="./ressources/Arrow.png"></summary>
               <div class="dropdown-search-section">
-                <input id="search-${this.id}" type="text" placeholder="Recherche un ${this.category.substring(0, this.category.length - 1)}">
+                <input id="search-${this.category}" type="text" placeholder="Recherche un ${this.categorie.substring(0, this.categorie.length - 1)}">
                 <img class="arrow-up" src="./ressources/Arrow.png">
               </div>
-              <ul id="${this.id}-list" class="dropdown-list">
+              <ul id="${this.category}-list" class="dropdown-list">
                 ${this.setList()}
               </ul>`;
   }
@@ -62,10 +77,11 @@ export class Dropdown {
    * @return  {void}  [return description]
    */
   filterDropdownList() {
-    let listElements = this.DOM.querySelectorAll('li');
-    document.addEventListener('keyup', function(e) {
-      const searchString = e.target.value.toLowerCase();
-      if (e.target.value.length > 2) {
+    const searchInput = this.DOM.querySelector('input');
+    const listElements = this.DOM.querySelectorAll('li');
+    searchInput.addEventListener('keyup', function() {
+      const searchString = searchInput.value.toLowerCase();
+      if (searchInput.value.length > 2) {
         listElements.forEach(el => {
           if (!el.textContent.toLowerCase().includes(searchString)) el.style.display = 'none';
         })
@@ -75,7 +91,7 @@ export class Dropdown {
   }
 
   /**
-   * Déplace l'élément de la liste dans la section tags au clic
+   * Au clic, supprime l'élément de la liste et créé le tag correspondant
    * @return  {void}
    */
   createTag() {
@@ -83,10 +99,29 @@ export class Dropdown {
     const tagContainer = document.getElementById('tags-container');
     let listElements = this.DOM.querySelectorAll('li');
     listElements.forEach(el => el.addEventListener('click', function(){
-      tagContainer.appendChild(el);
-      el.className = 'tag';
-      el.classList.add(`tag__${dropdown.id}`)
+      el.style.display = 'none';
+      let tag = document.createElement('li');
+      tag.innerHTML = el.textContent;
+      tag.className = 'tag';
+      tag.classList.add(`tag__${dropdown.category}`);
+      tagContainer.appendChild(tag);
+      tag.addEventListener('click', function(e){
+        dropdown.removeTag(e.target);
+      })
     }))
+  }
+
+  /**
+   * Supprime le tag de la section et le réaffiche dans la liste du dropdown
+   * @param   {HTMLElement}  tag  le tag à supprimer
+   * @return  {void}
+   */
+  removeTag(tag) {
+    tag.remove();
+    let listElements = this.DOM.querySelectorAll('li');
+    listElements.forEach(element => {
+      if (element.textContent == tag.textContent) element.style.display = 'inline'; return;
+    })
   }
 
 }
