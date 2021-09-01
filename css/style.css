@@ -61,7 +61,6 @@ input[type=search]::-webkit-search-results-decoration {
 
 /*----- Dropdowns -----------------------------------------------------------------------*/
 #dropdowns-container {
-  margin-top: 1rem;
   display: flex;
   flex-direction: row;
   gap: 1.25rem;
@@ -120,6 +119,7 @@ input[type=search]::-webkit-search-results-decoration {
 }
 
 .arrow-up {
+  cursor: pointer;
   transform: rotate(180deg);
 }
 
@@ -141,7 +141,7 @@ input[type=search]::-webkit-search-results-decoration {
 }
 
 /*----- Recipes --------------------------------------------------------------------------*/
-#recipes-container {
+#results-container {
   margin: 3.1rem 0 6.2rem 0;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -218,27 +218,26 @@ input[type=search]::-webkit-search-results-decoration {
 }
 
 @media all and (max-width: 1200px) {
-  #recipes-container {
+  #results-container {
     grid-template-columns: 1fr 1fr;
     gap: 1.6rem;
   }
 }
 @media all and (max-width: 780px) {
-  #recipes-container {
+  #results-container {
     grid-template-columns: 1fr;
   }
 }
 /*------------------------------------Tags--------------------------------------------*/
 #tags-container {
-  margin-top: 0;
   display: flex;
   flex-wrap: wrap;
   list-style-type: none;
-  padding: 0;
   gap: 0.5rem;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
 }
 #tags-container .tag {
-  margin-top: 1rem;
   font-size: 0.875rem;
   font-weight: 700;
   display: flex;
