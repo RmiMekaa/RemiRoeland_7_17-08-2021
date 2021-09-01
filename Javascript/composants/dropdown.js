@@ -1,10 +1,13 @@
 export class Dropdown {
 
-  constructor(category, list, domTarget) {
+  constructor(category, list, domTarget, results, dataManager) {
     this.category = category; // ingredients || appliances || ustensils
-    this.categorie = this.translate(category); // Le nom de la catégorie en français
     this.list = list; // la liste correspondant à la catégorie
     this.domTarget = domTarget; // la cible où injecter le dropdown
+    this.results = results; // Une référence à l'instance results
+    this.dataManager = dataManager; // Une référence à l'instance dataManager
+
+    this.categorie = this.translate(category); // Le nom de la catégorie en français
 
     this.DOM = document.createElement('details');
     this.DOM.className = `dropdown ${this.category}-dropdown`;
@@ -12,8 +15,9 @@ export class Dropdown {
     domTarget.appendChild(this.DOM);
 
     this.dropdownTrigger();
-    this.filterDropdownList();
-    this.createTag();
+    this.filterList();
+    this.listOnClick();
+    this.closeDropdown();
   }
 
   /**
@@ -58,25 +62,10 @@ export class Dropdown {
   }
 
   /**
-   * Ferme les dropdowns qui ne sont pas la cible du clic
-   * @return  {void} 
-   */
-  dropdownTrigger() {
-    const dropdowns = document.querySelectorAll('details');
-    dropdowns.forEach((targetDropdown) => {
-    targetDropdown.addEventListener("click", () => {
-      dropdowns.forEach((dropdown) => {
-        if (dropdown !== targetDropdown) dropdown.removeAttribute("open");
-        });
-      });
-    })
-  }
-
-  /**
    * Affiche les éléments de la liste correspondants à la recherche
    * @return  {void}  [return description]
    */
-  filterDropdownList() {
+  filterList() {
     const searchInput = this.DOM.querySelector('input');
     const listElements = this.DOM.querySelectorAll('li');
     searchInput.addEventListener('keyup', function() {
@@ -91,36 +80,73 @@ export class Dropdown {
   }
 
   /**
-   * Au clic, supprime l'élément de la liste et créé le tag correspondant
+   * Au clic, ajoute le filtre et créé le tag correspondant
    * @return  {void}
    */
-  createTag() {
+  listOnClick() {
     const dropdown = this;
-    const tagContainer = document.getElementById('tags-container');
     let listElements = this.DOM.querySelectorAll('li');
     listElements.forEach(el => el.addEventListener('click', function(){
       el.style.display = 'none';
-      let tag = document.createElement('li');
-      tag.innerHTML = el.textContent;
-      tag.className = 'tag';
-      tag.classList.add(`tag__${dropdown.category}`);
-      tagContainer.appendChild(tag);
-      tag.addEventListener('click', function(e){
-        dropdown.removeTag(e.target);
-      })
-    }))
+      dropdown.dataManager.addFilter(dropdown.category, el.textContent);
+      dropdown.createTag(el.textContent);
+    }));
   }
 
+  /**
+   * Créé un élément li dans le conteneur de tags
+   *
+   * @return  {void} 
+   */
+  createTag(string) {
+    const tagContainer = document.getElementById('tags-container');
+    let tag = document.createElement('li');
+    tag.innerText = string;
+    tag.className = 'tag';
+    tag.classList.add(`tag__${this.category}`);
+    tagContainer.appendChild(tag);
+    tag.addEventListener('click', () =>{
+      this.tagOnClick(tag);
+    })
+  }
   /**
    * Supprime le tag de la section et le réaffiche dans la liste du dropdown
    * @param   {HTMLElement}  tag  le tag à supprimer
    * @return  {void}
    */
-  removeTag(tag) {
+  tagOnClick(tag) {
     tag.remove();
-    let listElements = this.DOM.querySelectorAll('li');
-    listElements.forEach(element => {
-      if (element.textContent == tag.textContent) element.style.display = 'inline'; return;
+    this.dataManager.removeFilter(this.category, tag.textContent);
+    let dropdownList = this.DOM.querySelectorAll('li');
+    dropdownList.forEach(li => {
+      if (li.textContent == tag.textContent) li.style.display = 'inline'; return;
+    })
+  }
+
+  /**
+   * Ferme les dropdowns qui ne sont pas la cible du clic
+   * @return  {void} 
+   */
+  dropdownTrigger() {
+    const dropdowns = document.querySelectorAll('details');
+    dropdowns.forEach((targetDropdown) => {
+      targetDropdown.addEventListener("click", () => {
+        dropdowns.forEach((dropdown) => {
+          if (dropdown !== targetDropdown) {
+            dropdown.removeAttribute("open");
+            dropdown.querySelector('summary').style.display = 'flex';
+          }
+        });
+      });
+    })
+  }
+  closeDropdown() {
+    let dropdown = this.DOM;
+    let closeArrow = this.DOM.querySelector('.arrow-up');
+    let summary = this.DOM.querySelector('summary')
+    closeArrow.addEventListener('click', function() {
+      dropdown.removeAttribute('open');
+      summary.style.display = 'flex';
     })
   }
 
