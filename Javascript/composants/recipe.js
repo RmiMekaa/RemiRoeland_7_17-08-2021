@@ -46,10 +46,15 @@ export class Recipe {
    */
   ustensils;
 
-  constructor(data) {
+  constructor(data, domTarget) {
     for (const [key, value] of Object.entries(data)) {
       this[key] = value;
     }
+
+    this.DOM = document.createElement('article');
+    this.DOM.className = 'recipe-card';
+    this.DOM.innerHTML = this.recipeCardHtml;
+    domTarget.appendChild(this.DOM);
   }
 
   /**
@@ -57,22 +62,19 @@ export class Recipe {
    *
    * @return  {String}  HTML String
    */
-  recipeCardHtml() {
+  get recipeCardHtml() {
     return `
-            <article class="recipe-card">
-                <div class="recipe-image"></div>
-                <div class="recipe-content">
-                    <div class="recipe-content__heading">
-                        <h2>${this.name}</h2>
-                        <span class="duration">${this.time} min</span>
-                    </div>
-                    <ul class="recipe-content__ingredients">
-                      ${this.ingredientsList()}
-                    </ul>
-                    <p class="recipe-content__instructions">${this.description}</p>
-                </div>
-            </article>
-            `;
+      <div class="recipe-image"></div>
+      <div class="recipe-content">
+          <div class="recipe-content__heading">
+              <h2>${this.name}</h2>
+              <span class="duration">${this.time} min</span>
+          </div>
+          <ul class="recipe-content__ingredients">
+            ${this.ingredientsList()}
+          </ul>
+          <p class="recipe-content__instructions">${this.description}</p>
+      </div>`;
   }
 
   /**
