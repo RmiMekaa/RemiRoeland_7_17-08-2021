@@ -65,6 +65,7 @@ input[type=search]::-webkit-search-results-decoration {
   flex-direction: row;
   gap: 1.25rem;
   width: 100%;
+  height: 3rem;
   color: white;
 }
 #dropdowns-container .dropdown {
@@ -74,6 +75,10 @@ input[type=search]::-webkit-search-results-decoration {
   height: fit-content;
   border-radius: 0.3rem;
   font-weight: bold;
+  z-index: 1000;
+}
+#dropdowns-container .dropdown[open] summary {
+  display: none;
 }
 #dropdowns-container summary {
   text-transform: capitalize;
@@ -95,7 +100,7 @@ input[type=search]::-webkit-search-results-decoration {
   border: none;
   color: white;
   outline: none;
-  padding: 1rem;
+  padding: 1.25rem;
   width: 100%;
 }
 #dropdowns-container .dropdown-search-section input::placeholder {
