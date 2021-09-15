@@ -27,7 +27,7 @@ export class DataManager {
     let array = [];
     this.results.forEach(recipe => {
       recipe.ingredients.forEach(ingredient => {
-        if (array.indexOf(ingredient.ingredient) == -1) array.push(ingredient.ingredient);       
+        if (array.indexOf(ingredient.ingredient) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
       });
     });
     return array
@@ -35,7 +35,7 @@ export class DataManager {
   getAppliancesList() {
     let array = [];
     this.results.forEach(recipe => {
-      if (array.indexOf(recipe.appliance) == -1) array.push(recipe.appliance);       
+      if (array.indexOf(recipe.appliance) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
     });
     return array;
   }
@@ -43,7 +43,7 @@ export class DataManager {
     let array = [];
     this.results.forEach(recipe => {
       recipe.ustensils.forEach(ustensil => {
-        if (array.indexOf(ustensil) == -1) array.push(ustensil);       
+        if (array.indexOf(ustensil) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
       });
     });
     return array
@@ -57,6 +57,7 @@ export class DataManager {
     this.resultsContainer.displayResults(this.results);
 
     //TO DO: update dropdown list
+    globalThis.update();
   }
 
   //----- Tri -----------------------------------------------------------------------------------------------------------------
