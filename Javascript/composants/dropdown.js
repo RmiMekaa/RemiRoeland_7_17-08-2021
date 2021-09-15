@@ -1,17 +1,15 @@
 export class Dropdown {
 
-  constructor(category, list, domTarget, results, dataManager) {
+  constructor(category, domTarget, dataManager) {
     this.category = category; // ingredients || appliances || ustensils
-    this.list = list; // la liste correspondant à la catégorie
     this.domTarget = domTarget; // la cible où injecter le dropdown
-    this.results = results; // Une référence à l'instance results
     this.dataManager = dataManager; // Une référence à l'instance dataManager
 
     this.categorie = this.translate(category); // Le nom de la catégorie en français
 
     this.DOM = document.createElement('details');
     this.DOM.className = `dropdown ${this.category}-dropdown`;
-    this.DOM.innerHTML = this.createHTML();
+    this.DOM.innerHTML = this.dropdownHTML;
     domTarget.appendChild(this.DOM);
 
     this.dropdownTrigger();
@@ -40,14 +38,14 @@ export class Dropdown {
    *
    * @return  {String}  HTML String
    */
-  createHTML() {
+  get dropdownHTML() {
     return `<summary>${this.categorie}<img src="./ressources/Arrow.png"></summary>
               <div class="dropdown-search-section">
                 <input id="search-${this.category}" type="text" placeholder="Recherche un ${this.categorie.substring(0, this.categorie.length - 1)}">
                 <img class="arrow-up" src="./ressources/Arrow.png">
               </div>
               <ul id="${this.category}-list" class="dropdown-list">
-                ${this.setList()}
+                ${this.dropdownList}
               </ul>`;
   }
 
@@ -55,11 +53,18 @@ export class Dropdown {
    * Convertit la liste en HTML
    * @return  {String}  HTML String
    */
-  setList() {
+  get dropdownList() {
     let html = '';
-    this.list.forEach(item => { html += '<li>' + item + '</li>' });
+    let list;
+    switch(this.category) {
+      case 'ingredients' :  list = this.dataManager.getIngredientsList(); break;
+      case 'appliances'  :  list = this.dataManager.getAppliancesList();  break;
+      case 'ustensils'   :  list = this.dataManager.getUstensilsList();
+    }
+    list.forEach(item => { html += '<li>' + item + '</li>' });
     return html;
   }
+
 
   /**
    * Affiche les éléments de la liste correspondants à la recherche
@@ -148,6 +153,13 @@ export class Dropdown {
       dropdown.removeAttribute('open');
       summary.style.display = 'flex';
     })
+  }
+
+  //--------------------------------------------------------------------
+  
+  updateList(array) {
+    let list = this.DOM.querySelector('ul');
+    list.innerText = '';
   }
 
 }
