@@ -1,34 +1,32 @@
-import { Research } from "./research.js";
 import { DataManager} from "./dataManager.js";
 import { Dropdown } from "./composants/dropdown.js";
-import { SearchInput } from "./composants/searchInput.js";
-import { Results } from "./composants/results.js";
+import { ResultsContainer } from "./composants/resultsContainer.js";
 
-const dataManager = new DataManager();
+const resultsContainer = new ResultsContainer();
+const dataManager = new DataManager(resultsContainer);
 
-// Création du DOM - Section recherche
-let searchSection = document.querySelector('section');
-new SearchInput(dataManager, searchSection);
-let tagContainer = document.createElement('div');
-tagContainer.setAttribute('id', 'tags-container')
-searchSection.appendChild(tagContainer);
-let dropdownsContainer = document.createElement('div');
-dropdownsContainer.setAttribute('id', 'dropdowns-container');
-searchSection.appendChild(dropdownsContainer);
-new Dropdown("ingredients", dataManager.ingredients, dropdownsContainer);
-new Dropdown("appliances", dataManager.appliances, dropdownsContainer);
-new Dropdown("ustensils", dataManager.ustensils, dropdownsContainer);
+// Création des dropdowns ↓
+const dropdownsContainer = document.getElementById('dropdowns-container')
+const ingDrop = new Dropdown("ingredients", dropdownsContainer, dataManager);
+const appDrop = new Dropdown("appliances", dropdownsContainer, dataManager);
+const ustDrop = new Dropdown("ustensils", dropdownsContainer, dataManager);
 
-// Création du DOM - Section résultats
-let main = document.getElementsByTagName('main')[0];
-let resultsContainer = document.createElement('section');
-resultsContainer.setAttribute('id', 'recipes-container');
-main.appendChild(resultsContainer);
-new Results(dataManager.recipes);
+// Par defaut afficher toutes les recettes ↓
+resultsContainer.displayResults(dataManager.results);
 
-// Fonctionnalités de recherche
-new Research(dataManager);
-
+// Main Search input
+const searchBar = document.getElementById('searchBar');
+searchBar.addEventListener('keyup', () => {
+  if (searchBar.value.length < 3) {
+    dataManager.removeFilter('text', null);
+    resultsContainer.displayResults(dataManager.recipes);
+  }
+  else {
+    let searchString = searchBar.value.toLowerCase();
+    dataManager.addFilter('text',searchString);
+  }
+  dataManager.sort();
+})
 
 
 
