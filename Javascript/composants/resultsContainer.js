@@ -6,6 +6,8 @@ export class ResultsContainer {
     this.DOM = document.createElement('section');
     this.DOM.setAttribute('id', 'results-container')
     document.querySelector('main').appendChild(this.DOM);
+
+    this.displayResults(globalThis.dataManager.recipes)
   }
 
   /**
@@ -23,9 +25,15 @@ export class ResultsContainer {
     }
   }
 
+  /**
+   * Créé un message et l'insère dans le DOM
+   *
+   * @return  {void} 
+   */
   displayMessage() {
     let message = document.createElement('p');
-    message.innerText = 'Aucune recette ne correspond à votre recherche'
+    message.className = "noResultsMsg";
+    message.innerHTML = 'Désolé, nous n\'avons pas trouvé de recette correspondant à vos critères. </br> Vous pouvez chercher \"tarte aux pommes\", \"poisson\", etc.';
     this.DOM.appendChild(message);
   }
   

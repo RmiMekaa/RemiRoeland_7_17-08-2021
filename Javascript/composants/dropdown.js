@@ -21,12 +21,11 @@ export class Dropdown {
    */
   get dropdownHTML() {
     return `<summary>${this.categorie}<img src="./ressources/Arrow.png" alt="ouvrir la liste"></summary>
-              <div class="dropdown-search-section">
-                <input id="search-${this.category}" type="text" placeholder="Recherche un ${this.categorie.substring(0, this.categorie.length - 1)}">
-                <img class="arrow-up" src="./ressources/Arrow.png" alt="fermer la liste">
-              </div>
-              <ul id="${this.category}-list" class="dropdown-list">
-              </ul>`;
+            <div class="dropdown-search-section">
+              <input id="search-${this.category}" type="text" placeholder="Recherche un ${this.categorie.substring(0, this.categorie.length - 1)}">
+              <img class="arrow-up" src="./ressources/Arrow.png" alt="fermer la liste">
+            </div>
+            <ul id="${this.category}-list" class="dropdown-list"></ul>`;
   }
 
   /**
@@ -49,6 +48,11 @@ export class Dropdown {
     });
   }
 
+  /**
+   * Ajoute un écouteur au clic sur un élément de liste
+   *
+   * @return  {void} 
+   */
   addListener() {
     let list = this.DOM.querySelectorAll('.dropdown-list li');
     list.forEach(listItem => {
