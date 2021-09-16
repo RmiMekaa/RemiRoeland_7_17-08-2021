@@ -1073,7 +1073,7 @@ export const recipes = [
                 "unit": "grammes"
             },
             {
-                "ingredient": "Petits poids",
+                "ingredient": "Petits pois",
                 "quantity": 100,
                 "unit":"grammes"
             },
@@ -1084,7 +1084,7 @@ export const recipes = [
             }
         ],
         "time": 60,
-        "description":"Découper en cubes les carottes et pommes de terre. Faire revenir dans du beurre. Ajouter les lardons, une fois les lardons dorés, ajouter un grand verre d'eau. Ajouter les petit poids et les haricots verts ( tous deux pré cuits ). Ajouter Sel, poivre, thyms et laurier",
+        "description":"Découper en cubes les carottes et pommes de terre. Faire revenir dans du beurre. Ajouter les lardons, une fois les lardons dorés, ajouter un grand verre d'eau. Ajouter les petits pois et les haricots verts ( tous deux pré cuits ). Ajouter Sel, poivre, thyms et laurier",
         "appliance": "Poêle",
         "ustensils":["Couteau", "économe"]
     },
