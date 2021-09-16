@@ -65,7 +65,7 @@ input[type=search]::-webkit-search-results-decoration {
   flex-direction: row;
   gap: 1.25rem;
   width: 100%;
-  height: 3rem;
+  height: 3.5rem;
   color: white;
 }
 #dropdowns-container .dropdown {
@@ -151,6 +151,13 @@ input[type=search]::-webkit-search-results-decoration {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 3.1rem;
+}
+#results-container .noResultsMsg {
+  color: #D04F4F;
+  grid-column-start: span 3;
+  text-align: center;
+  font-size: 1.5rem;
+  margin-top: 5rem;
 }
 
 .recipe-card {
