@@ -2,6 +2,7 @@ import { DataManager} from "./dataManager.js";
 import { Dropdown } from "./composants/dropdown.js";
 import { ResultsContainer } from "./composants/resultsContainer.js";
 import { DropdownEventsHandler } from "./dropdownEventsHandler.js";
+import { HashManager } from "./HashManager.js"
 
 globalThis.dataManager = new DataManager();
 globalThis.resultsContainer = new ResultsContainer();
@@ -13,6 +14,8 @@ const appDrop = new Dropdown("appliances", dropdownsContainer);
 const ustDrop = new Dropdown("ustensils", dropdownsContainer);
 
 globalThis.dropdownEventsHandler = new DropdownEventsHandler();
+
+new HashManager();
 
 // Main Search input
 const searchBar = document.getElementById('searchBar');
