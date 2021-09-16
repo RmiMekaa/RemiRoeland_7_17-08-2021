@@ -66,7 +66,7 @@ export class DropdownEventsHandler {
    * Affiche les éléments de la liste correspondants à la recherche
    * @return  {void}  [return description]
    */
-  xfilterList() {
+  filterList() {
     const searchInput = document.querySelectorAll('.dropdown input');
     searchInput.forEach(input => {
       input.addEventListener('keyup', function () {
@@ -82,15 +82,6 @@ export class DropdownEventsHandler {
       })
     })
   }
-
-  filterList() {
-    let input = document.getElementById('search-ingredients');
-    console.log(input);
-    input.onchange = function() {
-      console.log(input);
-    }
-  }
-
 
   //----- Close Events -----------------------------------------------------
 

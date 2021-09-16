@@ -15,7 +15,7 @@ export class DataManager {
       ingredients : []
     };
 
-    this.results = []; // Stocke les résultats
+    this.results = this.recipes; // Stocke les résultats
   }
 
   //----- Récupération listes dropdown ------------------------------------------------------------------------------------------
