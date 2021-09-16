@@ -29,8 +29,8 @@ export class Dropdown {
   }
 
   /**
-   * Convertit la liste en HTML
-   * @return  {String}  HTML String
+   * créé et insère les éléments <li> dans les dropdowns
+   * @return  {void}
    */
   setDropdownList() {
     let ul = this.DOM.querySelector('.dropdown-list');
