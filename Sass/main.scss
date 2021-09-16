@@ -64,6 +64,7 @@ input[type="search"]::-webkit-search-results-decoration { display: none; }
 #dropdowns-container {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 1.25rem;
     width: 100%;
     height: 3.5rem;
