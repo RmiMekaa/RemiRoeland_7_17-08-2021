@@ -1,8 +1,23 @@
 export class DropdownEventsHandler {
 
   constructor(){
+    this.dropdowns = document.querySelectorAll('details');
     this.outFocusClose();
     this.arrowClose();
+    //this.dropdownOpen();
+    this.filterList();
+  }
+
+  dropdownOpen(){
+    let input = document.getElementById('searchBar');
+    console.log(input);
+    this.dropdowns.forEach(dropdown => {
+      dropdown.addEventListener('click', function() {
+        console.log('hello');
+        input.focus();
+      })
+        
+    })
   }
 
   /**
@@ -51,19 +66,31 @@ export class DropdownEventsHandler {
    * Affiche les éléments de la liste correspondants à la recherche
    * @return  {void}  [return description]
    */
-  filterList() {
-      const searchInput = this.DOM.querySelector('input');
-      const listElements = this.DOM.querySelectorAll('li');
-      searchInput.addEventListener('keyup', function () {
-        const searchString = searchInput.value.toLowerCase();
-        if (searchInput.value.length > 2) {
-          listElements.forEach(el => {
+  xfilterList() {
+    const searchInput = document.querySelectorAll('.dropdown input');
+    searchInput.forEach(input => {
+      input.addEventListener('keyup', function () {
+        const searchString = input.value.toLowerCase();
+        let list = input.closest('details').querySelectorAll('ul li');
+        if (input.value.length > 0) {
+          list.forEach(el => {
             if (!el.textContent.toLowerCase().includes(searchString)) el.style.display = 'none';
           })
+          return;
         }
-        else listElements.forEach(el => el.style.display = 'inline');
+        list.forEach(el => el.style.display = 'inline');
       })
+    })
   }
+
+  filterList() {
+    let input = document.getElementById('search-ingredients');
+    console.log(input);
+    input.onchange = function() {
+      console.log(input);
+    }
+  }
+
 
   //----- Close Events -----------------------------------------------------
 
@@ -71,7 +98,7 @@ export class DropdownEventsHandler {
    * Ferme les dropdowns qui ne sont pas la cible du clic
    * @return  {void} 
    */
-   outFocusClose() {
+  outFocusClose() {
     const dropdowns = document.querySelectorAll('details');
     dropdowns.forEach((targetDropdown) => {
       targetDropdown.addEventListener("click", () => {
