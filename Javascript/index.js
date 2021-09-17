@@ -4,6 +4,7 @@ import { ResultsContainer } from "./composants/resultsContainer.js";
 import { DropdownEventsHandler } from "./dropdownEventsHandler.js";
 import { HashManager } from "./HashManager.js"
 
+globalThis.hashManager = new HashManager();
 globalThis.dataManager = new DataManager();
 globalThis.resultsContainer = new ResultsContainer();
 
@@ -15,20 +16,13 @@ const ustDrop = new Dropdown("ustensils", dropdownsContainer);
 
 globalThis.dropdownEventsHandler = new DropdownEventsHandler();
 
-new HashManager();
-
 // Main Search input
 const searchBar = document.getElementById('searchBar');
 searchBar.addEventListener('keyup', () => {
-  if (searchBar.value.length < 3) {
-    dataManager.removeFilter('text', null);
-    globalThis.resultsContainer.displayResults(dataManager.recipes);
-  }
-  else {
-    let searchString = searchBar.value.toLowerCase();
-    dataManager.addFilter('text',searchString);
-  }
-  dataManager.sort();
+  let searchString = searchBar.value.toLowerCase();
+  if (searchString.length < 3) return hashManager.resetResults(); 
+  hashManager.pushMatchingRecipes('input', searchString);
+  hashManager.manageResults();
 })
 
 globalThis.updateLists = function() {
@@ -36,6 +30,7 @@ globalThis.updateLists = function() {
   appDrop.updateList();
   ustDrop.updateList();
 }
+
 
 
 

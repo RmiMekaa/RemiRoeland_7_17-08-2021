@@ -4,20 +4,7 @@ export class DropdownEventsHandler {
     this.dropdowns = document.querySelectorAll('details');
     this.outFocusClose();
     this.arrowClose();
-    //this.dropdownOpen();
     this.filterList();
-  }
-
-  dropdownOpen(){
-    let input = document.getElementById('searchBar');
-    console.log(input);
-    this.dropdowns.forEach(dropdown => {
-      dropdown.addEventListener('click', function() {
-        console.log('hello');
-        input.focus();
-      })
-        
-    })
   }
 
   /**
@@ -25,7 +12,9 @@ export class DropdownEventsHandler {
    * @return  {void}
    */
   listOnClick(category, value) {
-    globalThis.dataManager.addFilter(category, value);
+    value = value.toLowerCase();
+    hashManager.pushMatchingRecipes(category, value);
+    hashManager.manageResults();
     this.createTag(category, value);
   }
 

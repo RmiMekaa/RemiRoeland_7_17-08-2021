@@ -36,12 +36,12 @@ export class Dropdown {
     let ul = this.DOM.querySelector('.dropdown-list');
     ul.innerHTML = '';
     let list;
-    let html ='';
     switch (this.category) {
-      case 'ingredients': list = globalThis.dataManager.getIngredientsList(); break;
-      case 'appliances': list = globalThis.dataManager.getAppliancesList(); break;
-      case 'ustensils': list = globalThis.dataManager.getUstensilsList();
+      case 'ingredients': list = hashManager.getIngredientsList(); break;
+      case 'appliances' : list = hashManager.getAppliancesList();  break;
+      case 'ustensils'  : list = hashManager.getUstensilsList();
     }
+    list.sort();
     list.forEach(item => {
       let listItem = '<li>' + item + '</li>';
       ul.innerHTML += listItem;

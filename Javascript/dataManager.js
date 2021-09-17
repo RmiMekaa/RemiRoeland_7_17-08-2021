@@ -20,31 +20,31 @@ export class DataManager {
 
   //----- Récupération listes dropdown ------------------------------------------------------------------------------------------
 
-  getIngredientsList() {
-    let array = [];
-    this.results.forEach(recipe => {
-      recipe.ingredients.forEach(ingredient => {
-        if (array.indexOf(ingredient.ingredient) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
-      });
-    });
-    return array
-  }
-  getAppliancesList() {
-    let array = [];
-    this.results.forEach(recipe => {
-      if (array.indexOf(recipe.appliance) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
-    });
-    return array;
-  }
-  getUstensilsList() {
-    let array = [];
-    this.results.forEach(recipe => {
-      recipe.ustensils.forEach(ustensil => {
-        if (array.indexOf(ustensil) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
-      });
-    });
-    return array
-  }
+  // getIngredientsList() {
+  //   let array = [];
+  //   this.results.forEach(recipe => {
+  //     recipe.ingredients.forEach(ingredient => {
+  //       if (array.indexOf(ingredient.ingredient) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
+  //     });
+  //   });
+  //   return array
+  // }
+  // getAppliancesList() {
+  //   let array = [];
+  //   this.results.forEach(recipe => {
+  //     if (array.indexOf(recipe.appliance) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
+  //   });
+  //   return array;
+  // }
+  // getUstensilsList() {
+  //   let array = [];
+  //   this.results.forEach(recipe => {
+  //     recipe.ustensils.forEach(ustensil => {
+  //       if (array.indexOf(ustensil) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
+  //     });
+  //   });
+  //   return array
+  // }
   
   //----- Affichage des résultats ---------------------------------------------------------------------------------------------
 
@@ -110,8 +110,9 @@ export class DataManager {
   addFilter(type, value){
     if (type == 'text') this.filters.text = value.toLowerCase();
     else this.filters[type].push(value.toLowerCase());
-    this.sort();
-    this.displayResults();
+    console.log(this.filters);
+    //this.sort();
+    //this.displayResults();
   }
   /**
    * retire le filtre au tableau filters
@@ -122,83 +123,13 @@ export class DataManager {
   removeFilter(type, value){ 
     if (type =='text') this.filters.text = "";
     else this.filters[type].splice(this.filters[type].indexOf(value.toLowerCase()),1);
-    this.sort();
-    this.displayResults();
+    //this.sort();
+    //this.displayResults();
   }
 
-  //------ Recherche via l'input -------------------------------------------------------------------------------------------------
-  
-  sortByInput() {
-    let arr1 = this.sortIngByText(this.recipes);
-    let arr2 = this.sortByName(this.recipes);
-    let arr3 = this.sortByDesciption(this.recipes);
+  getHashTables(){
+    globalThis.hashManager.hash_ingredients
 
-    let results = arr1.concat(arr2, arr3)
-    results = [...new Set(results)];
-
-    return results;
-  }
-
-  //------ Recherche par catégorie -------------------------------------------------------------------------------------------
-
-  sortIngByText(array) {
-    let results = [];
-    array.forEach(recipe => {
-     recipe.ingredients.forEach(ingredient => {
-       if (ingredient.ingredient.toLowerCase().includes(this.filters.text) && results.indexOf(recipe) == -1) results.push(recipe);
-     });
-    })
-    return results;
- 
-  }
-  sortByIngredients(array) {
-    let arrays = [];
-    for (let i=0; i < this.filters.ingredients.length; i++) {
-      let arr = [];
-      array.forEach(recipe => {
-        recipe.ingredients.forEach(ingredient => {
-          if (ingredient.ingredient.toLowerCase().includes(this.filters.ingredients[i]) && arr.indexOf(recipe) == -1) arr.push(recipe);
-        });
-      })
-      arrays.push(arr);
-    }
-    let results = this.getMatchingValues(arrays);
-    return results;
-  }
-  sortByAppliance(array) {
-    let results = [];
-    array.forEach(recipe => {
-      if (this.filters.appliances.includes(recipe.appliance.toLowerCase()) && results.indexOf(recipe) == -1) results.push(recipe);
-    })
-    return results;
-  }
-  sortByUstensils(array) {
-    let arrays = [];
-    for (let i=0; i < this.filters.ustensils.length; i++) {
-      let arr = [];
-      array.forEach(recipe => {
-        recipe.ustensils.forEach(ustensil => {
-          if (ustensil.includes(this.filters.ustensils[i]) && arr.indexOf(recipe) == -1) arr.push(recipe);
-        });
-      })
-      arrays.push(arr);
-    }
-    let results = this.getMatchingValues(arrays);
-    return results;
-  }
-  sortByName(array) {
-    let results = [];
-    array.forEach(recipe => {
-      if (recipe.name.toLowerCase().includes(this.filters.text)) results.push(recipe)
-    })
-    return results;
-  }
-  sortByDesciption(array) {
-    let results = [];
-    array.forEach(recipe => {
-      if (recipe.description.toLowerCase().includes(this.filters.text)) results.push(recipe)
-    })
-    return results;
   }
 
 }
