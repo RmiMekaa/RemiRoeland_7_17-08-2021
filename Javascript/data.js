@@ -579,7 +579,7 @@ export const recipes = [
             }
         ],
         "time": 45,
-        "description":"Faire cuire les pâtes si vous n'avez pas de pennes des coquillettes peuvent faire l'affaire. Découper les tomates en petits morceaux, soit en tranches soit en dés. Coupez le basilic en petites morceaux et mélangez le aux tomates.  Coupez la mozzarella en tranche. Préchauffez le four à 200°. Alternez entre couches de pattes et couches de tomates, terminez par une couche de pates et recouvrir du fromage. Laisser au four 30 minutes et régalez vous ! Une recette simple qui fera plaisir au petits comme aux grands.",
+        "description":"Faire cuire les pâtes si vous n'avez pas de pennes des coquillettes peuvent faire l'affaire. Découpez les tomates en petits morceaux, soit en tranches soit en dés. Coupez le basilic en petits morceaux et mélangez le aux tomates.  Coupez la mozzarella en tranche. Préchauffez le four à 200°. Alternez entre couches de pâtes et couches de tomates, terminez par une couche de pâtes et recouvrir de fromage. Laissez au four 30 minutes et régalez vous ! Une recette simple qui fera plaisir aux petits comme aux grands.",
         "appliance": "Four",
         "ustensils":["plat à gratin", "couteau", "râpe à fromage"]
     },
@@ -1396,7 +1396,7 @@ export const recipes = [
             }
         ],
         "time": 10,
-        "description":"Dans un saladier mettre l'eau, le jus des cirtons et le sucre. Bien mélanger. Ajouter le bicarbonate. Servir. Ajouter des glaçon et une feuille de menthe pour la déco.",
+        "description":"Dans un saladier mettre l'eau, le jus des citrons et le sucre. Bien mélanger. Ajouter le bicarbonate. Servir. Ajouter des glaçon et une feuille de menthe pour la déco.",
         "appliance": "Saladier",
         "ustensils":["cuillère en bois"]
     },
