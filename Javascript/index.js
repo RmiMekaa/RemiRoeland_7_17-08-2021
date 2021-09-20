@@ -1,10 +1,8 @@
-import { DataManager} from "./dataManager.js";
 import { Dropdown } from "./composants/dropdown.js";
 import { ResultsContainer } from "./composants/resultsContainer.js";
 import { DropdownEventsHandler } from "./dropdownEventsHandler.js";
-import { HashManager } from "./HashManager.js"
+import { DataManager } from "./dataManager.js"
 
-globalThis.hashManager = new HashManager();
 globalThis.dataManager = new DataManager();
 globalThis.resultsContainer = new ResultsContainer();
 
@@ -20,9 +18,10 @@ globalThis.dropdownEventsHandler = new DropdownEventsHandler();
 const searchBar = document.getElementById('searchBar');
 searchBar.addEventListener('keyup', () => {
   let searchString = searchBar.value.toLowerCase();
-  if (searchString.length < 3) return hashManager.resetResults(); 
-  hashManager.pushMatchingRecipes('input', searchString);
-  hashManager.manageResults();
+  if (searchString.length < 3) dataManager.filters.input = []; 
+  else dataManager.addFilter('input', searchString);
+
+  dataManager.manageResults();
 })
 
 globalThis.updateLists = function() {

@@ -11,11 +11,11 @@ export class DropdownEventsHandler {
    * Évènements au clic sur un élément de la liste
    * @return  {void}
    */
-  listOnClick(category, value) {
-    value = value.toLowerCase();
-    hashManager.pushMatchingRecipes(category, value);
-    hashManager.manageResults();
+  listOnClick(category, value, dropdown) {
+    dataManager.addFilter(category, value);
+    dataManager.manageResults();
     this.createTag(category, value);
+    dropdown.removeAttribute('open');
   }
 
   /**
@@ -46,9 +46,10 @@ export class DropdownEventsHandler {
    *
    * @return  {void}
    */
-  tagOnClick(category, tag) {
-    tag.remove();
-    globalThis.dataManager.removeFilter(category, tag.textContent);  
+  tagOnClick(category, el) {
+    el.remove();
+    dataManager.removeFilter(category, el.textContent);  
+    dataManager.manageResults();
   }
 
   /**

@@ -7,7 +7,7 @@ export class ResultsContainer {
     this.DOM.setAttribute('id', 'results-container')
     document.querySelector('main').appendChild(this.DOM);
 
-    this.displayResults(hashManager.allRecipes);
+    this.displayResults(dataManager.allRecipes);
   }
 
   /**
@@ -21,7 +21,7 @@ export class ResultsContainer {
     if (this.DOM.childNodes.length > 0) this.DOM.innerHTML = '';
     if (array.length == 0) this.displayMessage();
     array.forEach(id => {
-      let recipe = hashManager.recettes['recette_' + id];
+      let recipe = dataManager.recipesIndex['recette_' + id];
       new Recipe(recipe, this.DOM);
     });
   }

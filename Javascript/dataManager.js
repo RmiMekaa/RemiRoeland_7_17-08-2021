@@ -1,135 +1,218 @@
 import { recipes } from "./data.js";
-
-export class DataManager {
-
-  /**
-   * @constructor
-   */
-  constructor() {
-    this.recipes = recipes; 
-    
-    this.filters = {
-      text : "",
-      appliances : [],
-      ustensils: [],
-      ingredients : []
-    };
-
-    this.results = this.recipes; // Stocke les résultats
-  }
-
-  //----- Récupération listes dropdown ------------------------------------------------------------------------------------------
-
-  // getIngredientsList() {
-  //   let array = [];
-  //   this.results.forEach(recipe => {
-  //     recipe.ingredients.forEach(ingredient => {
-  //       if (array.indexOf(ingredient.ingredient) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
-  //     });
-  //   });
-  //   return array
-  // }
-  // getAppliancesList() {
-  //   let array = [];
-  //   this.results.forEach(recipe => {
-  //     if (array.indexOf(recipe.appliance) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
-  //   });
-  //   return array;
-  // }
-  // getUstensilsList() {
-  //   let array = [];
-  //   this.results.forEach(recipe => {
-  //     recipe.ustensils.forEach(ustensil => {
-  //       if (array.indexOf(ustensil) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
-  //     });
-  //   });
-  //   return array
-  // }
   
-  //----- Affichage des résultats ---------------------------------------------------------------------------------------------
+  export class DataManager {
 
-  displayResults() {
-    console.log('filters :', this.filters);
+  constructor() {
+    this.recipes = recipes;
+
+    this.recipesIndex = {};
+    this.allRecipes = this.getAllRecipesIds();
+
+    this.hash_input = {}
+    this.hash_ingredients = {}
+    this.hash_appliances = {}
+    this.hash_ustensils = {}
+
+    this.resultsBy = {
+      input : [],
+      ingredients : [],
+      appliances : [],
+      ustensils : []
+    }
+
+    this.filters = {
+      input : [],
+      ingredients : [],
+      appliances : [],
+      ustensils : []
+    }
+
+    this.results = this.allRecipes;  
+
+    this.makehashTables();
+  }
+
+  //------ Hash Tables --------------------------------------------------------------------------------------
+
+  makehashTables() {
+    this.recipes.forEach(recipe => {
+      let id = recipe.id;
+      this.recipesIndex['recette_'+ id] = recipe;
+      this.hashRecipeStrings(recipe, id)
+      this.hashRecipeUstensils(recipe, id);
+      this.hashRecipeIngredients(recipe, id)    
+      this.hashRecipeAppliance(recipe, id)
+    })
+  }
+  
+  hashRecipeStrings(recipe, id){
+    this.hashFromString(recipe.name.toLowerCase(), id);
+    this.hashFromString(recipe.description.toLowerCase(), id);
+    recipe.ingredients.forEach(ingredient => {
+      this.hashFromString(ingredient.ingredient.toLowerCase(), id);
+    });
+  }
+  hashRecipeUstensils(recipe, id){
+    recipe.ustensils.forEach(ustensil => {
+      this.addToHash(ustensil.toLowerCase(), id, this.hash_ustensils);
+    });
+  }
+  hashRecipeIngredients(recipe, id){
+    recipe.ingredients.forEach(ingredient => {
+      this.addToHash(ingredient.ingredient.toLowerCase(), id, this.hash_ingredients)
+    });
+  }
+  hashRecipeAppliance(recipe, id){
+    this.addToHash(recipe.appliance.toLowerCase(), id, this.hash_appliances)
+  }
+
+  addToHash(key, id, destination) {
+    if(!destination[key]) destination[key] = [];
+    if(destination[key].indexOf(id) == -1) destination[key].push(id);
+  }
+  hashFromString(string, id){
+    let cleanString = this.removePunctuation(string);
+    const words = cleanString.split(" ");
+    words.forEach(word => {
+      let i, j;  
+      for (i = 0; i < word.length; i++) {
+          for (j = i + 1; j < word.length + 1; j++) {
+            let substring = word.slice(i, j);
+            if (substring.length > 2) this.addToHash(substring, id, this.hash_input);
+          }
+      }
+    });
+  }
+  removePunctuation(string) {
+    const regex = /[!"#$%&'()*°+,-./:;<=>?@[\]^_`{|}~0123456789]/g;
+    const result = string.replace(regex, ' ');
+
+    return result;
+  }
+
+  //------ Dropdown List ---------------------------------------------------------------------------------------------
+
+  getIngredientsList() {
+    let array = [];
+    this.results.forEach(id => {
+      let recipe = this.recipesIndex['recette_' + id];
+      recipe.ingredients.forEach(ingredient => {
+        if ((array.indexOf(ingredient.ingredient) == -1) && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
+      });
+    });
+    return array
+  }
+  getAppliancesList() {
+    let array = [];
+    this.results.forEach(id => {
+      let recipe = this.recipesIndex['recette_' + id];
+      if ((array.indexOf(recipe.appliance) == -1) && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
+    });
+    return array;
+  }
+  getUstensilsList() {
+    let array = [];
+    this.results.forEach(id => {
+      let recipe = this.recipesIndex['recette_' + id];
+      recipe.ustensils.forEach(ustensil => {
+        if ((array.indexOf(ustensil) == -1) && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
+      });
+    });
+    return array
+  }
+
+  //----- Manage Results ---------------------------------------------------------------------------------------------
+
+  manageResults() {
+    this.getResults();
     console.log('results :', this.results);
-    globalThis.resultsContainer.displayResults(this.results);
     globalThis.updateLists();
+    resultsContainer.displayResults(this.results);
   }
 
-  //----- Tri -----------------------------------------------------------------------------------------------------------------
+  //------ Ajout/retrait filtres -------------------------------------------------------------------------------------
 
-  /**
-   * Trie les recettes en fonction des filtres et stocke les résultats obtenus dans le tableau results
-   *
-   * @return  {void}
-   */
-  sort() {
-    let arr1 = this.sortByInput();                    // Les recettes triées par texte
-    let arr2 = this.sortByIngredients(this.recipes);  // Les recettes triées par ingrédients
-    let arr3 = this.sortByAppliance(this.recipes);    // Les recettes triées par appareil
-    let arr4 = this.sortByUstensils(this.recipes);    // Les recettes triées par ustensiles
-
-    let arrays = [];
-    if (arr1.length > 0) arrays.push(arr1);
-    if (arr2.length > 0) arrays.push(arr2);
-    if (arr3.length > 0) arrays.push(arr3);
-    if (arr4.length > 0) arrays.push(arr4);
-
-    let matchingValues = this.getMatchingValues(arrays);
-
-    if (matchingValues.length == 0) this.results = [];
-    else this.results = matchingValues;
+  addFilter(category, string) {
+    let filter = string.toLowerCase();
+    switch (category) {
+      case 'input'       :  this.filters.input = [filter];            break;
+      case 'appliances'  :  this.filters[category] = [filter];        break;
+      case 'ingredients' :  this.filters.ingredients.push(filter);    break;
+      case 'ustensils'   :  this.filters.ustensils.push(filter);
+    }
+    console.log(this.filters);
+  }
+  removeFilter(category, string) {
+    this.filters[category].splice(this.filters[category].indexOf(string.toLowerCase()),1);
+    console.log(this.filters);
   }
 
+  //----- Tri Recettes -----------------------------------------------------------------------------------------------
+
+
+  getRecipesIds() {
+    if (!this.hash_input[this.filters.input]) this.resultsBy.input = [];
+    else this.resultsBy.input = this.getFromHash(this.filters.input, this.hash_input);
+
+
+    this.resultsBy.appliances = this.getFromHash(this.filters.appliances, this.hash_appliances);
+    this.resultsBy.ingredients = this.getFromHash(this.filters.ingredients, this.hash_ingredients);
+    this.resultsBy.ustensils = this.getFromHash(this.filters.ustensils, this.hash_ustensils);
+  }
+  getFromHash(filtersArray, hashTable) {
+    let results = [];
+    if (filtersArray.length == 1) results = hashTable[filtersArray];
+    else {
+      filtersArray.forEach(string => results.push(hashTable[string]));
+      results = this.getCrossValues(results);
+    }
+    return results;
+  }
   /**
-   * Compare plusieurs tableaux et retourne un tableau contenant les valeurs similaires
+   * Compare plusieurs tableaux et retourne les valeurs communes
    *
-   * @param   {Array}  array  Un tableau contenant plusieurs tableaux
+   * @param   {array}  array  Un tableau comportant plusieurs tableaux
    *
-   * @return  {Array}  Le tableau contenant les valeurs similaires trouvées
+   * @return  {array}  Un nouveau tableau avec les valeurs communes
    */
-  getMatchingValues(array) {
-    let matchingValues = []
+  getCrossValues(array) {
+    let crossValues = []
     if (array.length > 0) {
-      matchingValues = array.shift().filter(function(v) {
-        return array.every(function(recipes) {
-            return recipes.indexOf(v) !== -1;
+      crossValues = array.shift().filter(id => {
+        return array.every(arr => {
+            return arr.indexOf(id) !== -1;
         })
       })  
     }
-    return matchingValues;
+    return crossValues;
+  }
+  getResults() {
+    if  (this.filters.input.length == 0 && this.filters.ingredients.length == 0 && this.filters.appliances.length == 0 && this.filters.ustensils.length == 0) {
+      return this.results = this.allRecipes;
+    }
+
+    this.getRecipesIds();
+
+    let arrays = [];
+    if (this.resultsBy.input.length > 0) arrays.push(this.resultsBy.input);
+    if (this.resultsBy.ingredients.length > 0) arrays.push(this.resultsBy.ingredients);
+    if (this.resultsBy.appliances.length > 0) arrays.push(this.resultsBy.appliances);
+    if (this.resultsBy.ustensils.length > 0) arrays.push(this.resultsBy.ustensils);
+
+    this.results = this.getCrossValues(arrays);
+  }
+  getAllRecipesIds() {
+    let allRecipesIds = [];
+    this.recipes.forEach(recipe => {
+      allRecipesIds.push(recipe.id)
+    });
+    return allRecipesIds;
   }
 
-  //----- Ajout/Retrait filtres ----------------------------------------------------------------------------------------------------
+
   
-  /**
-   * Ajoute le filtre au tableau filters
-   * @param   {String}  type   La catégorie du filtre (ingredients || appliances || ustensils)
-   * @param   {String}  value  Le filtre à ajouter
-   * @return  {void} 
-   */
-  addFilter(type, value){
-    if (type == 'text') this.filters.text = value.toLowerCase();
-    else this.filters[type].push(value.toLowerCase());
-    console.log(this.filters);
-    //this.sort();
-    //this.displayResults();
-  }
-  /**
-   * retire le filtre au tableau filters
-   * @param   {String}  type   La catégorie du filtre (ingredients || appliances || ustensils)
-   * @param   {String}  value  Le filtre à supprimer
-   * @return  {void}
-   */
-  removeFilter(type, value){ 
-    if (type =='text') this.filters.text = "";
-    else this.filters[type].splice(this.filters[type].indexOf(value.toLowerCase()),1);
-    //this.sort();
-    //this.displayResults();
-  }
 
-  getHashTables(){
-    globalThis.hashManager.hash_ingredients
 
-  }
+
 
 }
