@@ -13,15 +13,15 @@ export class ResultsContainer {
   /**
    * Affiche les recettes
    *
-   * @param   {array}  array  Un tableau contenant des ids
+   * @param   {array}  ids  Un tableau contenant des ids
    *
    * @return  {void}
    */
-  displayResults(array) {
+  displayResults(ids) {
     if (this.DOM.childNodes.length > 0) this.DOM.innerHTML = '';
-    if (array.length == 0) this.displayMessage();
-    array.forEach(id => {
-      let recipe = dataManager.recipesIndex['recette_' + id];
+    if (ids.length == 0) this.displayMessage();
+    ids.forEach(id => {
+      let recipe = dataManager.recipes['recette_' + id];
       new Recipe(recipe, this.DOM);
     });
   }

@@ -58,7 +58,7 @@ export class Dropdown {
     let list = this.DOM.querySelectorAll('.dropdown-list li');
     list.forEach(listItem => {
       listItem.addEventListener('click', () => {
-        globalThis.dropdownEventsHandler.listOnClick(this.category, listItem.textContent, dropdown);
+        globalThis.dropdownEventsHandler.listClickEvents(this.category, listItem.textContent, dropdown);
       })
     })
   }

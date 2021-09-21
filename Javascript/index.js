@@ -24,6 +24,7 @@ searchBar.addEventListener('keyup', () => {
   dataManager.manageResults();
 })
 
+// Actualisation des listes des dropdowns
 globalThis.updateLists = function() {
   ingDrop.updateList();
   appDrop.updateList();
