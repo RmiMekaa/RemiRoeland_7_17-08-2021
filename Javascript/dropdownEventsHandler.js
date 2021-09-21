@@ -4,22 +4,35 @@ export class DropdownEventsHandler {
     this.dropdowns = document.querySelectorAll('details');
     this.outFocusClose();
     this.arrowClose();
-    this.filterList();
+    this.searchInList();
   }
 
   /**
    * Évènements au clic sur un élément de la liste
    * @return  {void}
    */
-  listOnClick(category, value, dropdown) {
+  listClickEvents(category, value, dropdown) {
     dataManager.addFilter(category, value);
     dataManager.manageResults();
     this.createTag(category, value);
     dropdown.removeAttribute('open');
   }
-
   /**
-   * Créé un tag au dessus des dropdowns
+   * Évènements au clic sur un tag
+   *
+   * @param   {string}        category  La catégorie du tag
+   * @param   {HTMLElement}   el        L'élément sur lequel le clic a été effectué
+   *
+   * @return  {void}
+   */
+  tagClickEvents(category, el) {
+    el.remove();
+    dataManager.removeFilter(category, el.textContent);  
+    dataManager.manageResults();
+  }
+  
+  /**
+   * Créé un tag et l'insère dans le DOM
    *
    * @param   {string}  category  La catégorie du tag
    * @param   {string}  string    Le texte du tag
@@ -34,29 +47,15 @@ export class DropdownEventsHandler {
     tag.classList.add(`tag__${category}`);
     tagContainer.appendChild(tag);
     tag.addEventListener('click', () => {
-      this.tagOnClick(category, tag);
+      this.tagClickEvents(category, tag);
     })
-  }
-
-  /**
-   * Évènements au clic sur un tag
-   *
-   * @param   {string}        category  La catégorie du tag
-   * @param   {HTMLElement}   tag       L'élément sur lequel le clic a été effectué
-   *
-   * @return  {void}
-   */
-  tagOnClick(category, el) {
-    el.remove();
-    dataManager.removeFilter(category, el.textContent);  
-    dataManager.manageResults();
   }
 
   /**
    * Affiche les éléments de la liste correspondants à la recherche
    * @return  {void}  [return description]
    */
-  filterList() {
+  searchInList() {
     const searchInput = document.querySelectorAll('.dropdown input');
     searchInput.forEach(input => {
       input.addEventListener('keyup', function () {
@@ -73,23 +72,18 @@ export class DropdownEventsHandler {
     })
   }
 
-  //----- Close Events -----------------------------------------------------
-
   /**
-   * Ferme les dropdowns qui ne sont pas la cible du clic
+   * Ferme les dropdowns si un clic en dehors est détecté
    * @return  {void} 
    */
   outFocusClose() {
     const dropdowns = document.querySelectorAll('details');
-    dropdowns.forEach((targetDropdown) => {
-      targetDropdown.addEventListener("click", () => {
-        dropdowns.forEach((dropdown) => {
-          if (dropdown !== targetDropdown) {
-            dropdown.removeAttribute("open");
-            //dropdown.querySelector('summary').style.display = 'flex';
-          }
-        });
-      });
+    window.addEventListener('click', function(e) {
+      dropdowns.forEach(dropdown => {
+        if (dropdown.hasAttribute('open') && !dropdown.contains(e.target)) {
+          dropdown.removeAttribute('open')
+        }
+      })
     })
   }
   /**
