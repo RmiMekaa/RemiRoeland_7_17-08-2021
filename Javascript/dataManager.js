@@ -27,6 +27,7 @@ export class DataManager {
         if (array.indexOf(ingredient.ingredient) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
       });
     });
+    array.sort();
     return array
   }
   getAppliancesList() {
@@ -34,6 +35,7 @@ export class DataManager {
     this.results.forEach(recipe => {
       if (array.indexOf(recipe.appliance) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
     });
+    array.sort();
     return array;
   }
   getUstensilsList() {
@@ -43,19 +45,44 @@ export class DataManager {
         if (array.indexOf(ustensil) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
       });
     });
+    array.sort();
     return array
   }
-  
-  //----- Affichage des résultats ---------------------------------------------------------------------------------------------
 
+  /**
+   * Ajoute le filtre au tableau filters
+   * @param   {String}  type   La catégorie du filtre (ingredients || appliances || ustensils)
+   * @param   {String}  value  Le filtre à ajouter
+   * @return  {void} 
+   */
+  addFilter(type, value){
+    if (type == 'text') this.filters.text = value.toLowerCase();
+    else this.filters[type].push(value.toLowerCase());
+    this.sort();
+    this.displayResults();
+  }
+  /**
+   * retire le filtre au tableau filters
+   * @param   {String}  type   La catégorie du filtre (ingredients || appliances || ustensils)
+   * @param   {String}  value  Le filtre à supprimer
+   * @return  {void}
+   */
+  removeFilter(type, value){ 
+    if (type =='text') this.filters.text = "";
+    else this.filters[type].splice(this.filters[type].indexOf(value.toLowerCase()),1);
+    this.sort();
+    this.displayResults();
+  }
+
+  /**
+   * Affiche les résultats et met à jour les listes des dropdowns
+   *
+   * @return  {void}
+   */
   displayResults() {
-    console.log('filters :', this.filters);
-    console.log('results :', this.results);
     globalThis.resultsContainer.displayResults(this.results);
     globalThis.updateLists();
   }
-
-  //----- Tri -----------------------------------------------------------------------------------------------------------------
 
   /**
    * Trie les recettes en fonction des filtres et stocke les résultats obtenus dans le tableau results
@@ -98,36 +125,12 @@ export class DataManager {
     }
     return matchingValues;
   }
-
-  //----- Ajout/Retrait filtres ----------------------------------------------------------------------------------------------------
   
   /**
-   * Ajoute le filtre au tableau filters
-   * @param   {String}  type   La catégorie du filtre (ingredients || appliances || ustensils)
-   * @param   {String}  value  Le filtre à ajouter
-   * @return  {void} 
+   * Retourne les recettes correspondantes à la recherche via input
+   *
+   * @return  {array} un tableau de recettes
    */
-  addFilter(type, value){
-    if (type == 'text') this.filters.text = value.toLowerCase();
-    else this.filters[type].push(value.toLowerCase());
-    this.sort();
-    this.displayResults();
-  }
-  /**
-   * retire le filtre au tableau filters
-   * @param   {String}  type   La catégorie du filtre (ingredients || appliances || ustensils)
-   * @param   {String}  value  Le filtre à supprimer
-   * @return  {void}
-   */
-  removeFilter(type, value){ 
-    if (type =='text') this.filters.text = "";
-    else this.filters[type].splice(this.filters[type].indexOf(value.toLowerCase()),1);
-    this.sort();
-    this.displayResults();
-  }
-
-  //------ Recherche via l'input -------------------------------------------------------------------------------------------------
-  
   sortByInput() {
     let arr1 = this.sortIngByText(this.recipes);
     let arr2 = this.sortByName(this.recipes);
