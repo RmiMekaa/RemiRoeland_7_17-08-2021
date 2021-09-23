@@ -103,7 +103,7 @@ import { HashTables } from "./hashTables.js";
    * @return  {void}
    */
   updatePageContent() {
-    this.results = this.getResults();
+    this.getResults();
     globalThis.updateLists();
     resultsContainer.displayResults(this.results);
   }
@@ -149,8 +149,8 @@ import { HashTables } from "./hashTables.js";
     let filtersAreEmpty = this.checkFiltersContent();
     if (filtersAreEmpty) return this.allRecipes;
     this.getResultsByCategory();
-    console.log('V2', this.getCrossResults());
-    return this.getCrossResults();  
+    this.results = this.getCrossResults();  
+    console.log('V2', this.results);
   }
 
   /**
