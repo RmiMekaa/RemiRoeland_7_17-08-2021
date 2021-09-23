@@ -25,7 +25,7 @@ searchBar.addEventListener('keyup', () => {
     let searchString = searchBar.value.toLowerCase();
     dataManager.addFilter('text',searchString);
   }
-  dataManager.sort();
+  dataManager.updatePageContent();
 })
 
 globalThis.updateLists = function() {
