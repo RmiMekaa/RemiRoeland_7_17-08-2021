@@ -18,12 +18,12 @@ globalThis.dropdownEventsHandler = new DropdownEventsHandler();
 const searchBar = document.getElementById('searchBar');
 searchBar.addEventListener('keyup', () => {
   if (searchBar.value.length < 3) {
-    dataManager.removeFilter('text', null);
+    dataManager.removeFilter('input', null);
     globalThis.resultsContainer.displayResults(dataManager.recipes);
   }
   else {
     let searchString = searchBar.value.toLowerCase();
-    dataManager.addFilter('text',searchString);
+    dataManager.addFilter('input',searchString);
   }
   dataManager.updatePageContent();
 })

@@ -9,7 +9,7 @@ export class DataManager {
     this.recipes = recipes; 
     
     this.filters = {
-      text : "",
+      input : [],
       appliances : [],
       ustensils: [],
       ingredients : []
@@ -59,8 +59,10 @@ export class DataManager {
    * @return  {void} 
    */
   addFilter(type, value){
-    if (type == 'text') this.filters.text = value.toLowerCase();
+    if (type == 'input') this.filters.input = [value.toLowerCase()];
     else this.filters[type].push(value.toLowerCase());
+    console.log(this.filters.input);
+
   }
   /**
    * retire le filtre au tableau filters
@@ -69,7 +71,7 @@ export class DataManager {
    * @return  {void}
    */
   removeFilter(type, value){ 
-    if (type =='text') this.filters.text = "";
+    if (type =='input') this.filters.input = [];
     else this.filters[type].splice(this.filters[type].indexOf(value.toLowerCase()),1);
   }
 
@@ -145,7 +147,7 @@ export class DataManager {
     let results = [];
     array.forEach(recipe => {
      recipe.ingredients.forEach(ingredient => {
-       if (ingredient.ingredient.toLowerCase().includes(this.filters.text) && results.indexOf(recipe) == -1) results.push(recipe);
+       if (ingredient.ingredient.toLowerCase().includes(this.filters.input) && results.indexOf(recipe) == -1) results.push(recipe);
      });
     })
     return results;
@@ -154,14 +156,14 @@ export class DataManager {
   sortByName(array) {
     let results = [];
     array.forEach(recipe => {
-      if (recipe.name.toLowerCase().includes(this.filters.text)) results.push(recipe)
+      if (recipe.name.toLowerCase().includes(this.filters.input)) results.push(recipe)
     })
     return results;
   }
   sortByDesciption(array) {
     let results = [];
     array.forEach(recipe => {
-      if (recipe.description.toLowerCase().includes(this.filters.text)) results.push(recipe)
+      if (recipe.description.toLowerCase().includes(this.filters.input)) results.push(recipe)
     })
     return results;
   }
