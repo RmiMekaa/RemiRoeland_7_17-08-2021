@@ -102,8 +102,8 @@ import { HashTables } from "./hashTables.js";
    *
    * @return  {void}
    */
-  manageResults() {
-    this.results = this.getFinalResults();
+  updatePageContent() {
+    this.results = this.getResults();
     globalThis.updateLists();
     resultsContainer.displayResults(this.results);
   }
@@ -145,7 +145,7 @@ import { HashTables } from "./hashTables.js";
    *
    * @return  {array} Un tableau contenant des ids
    */
-  getFinalResults() {
+  getResults() {
     let filtersAreEmpty = this.checkFiltersContent();
     if (filtersAreEmpty) return this.allRecipes;
     this.getResultsByCategory();
