@@ -9,16 +9,16 @@ export class DataManagerV1 {
     this.recipes = recipes; 
     
     this.filters = {
-      text : "",
-      appliances : [],
-      ustensils: [],
-      ingredients : []
+      input : ['choco'],
+      appliances : ['four'],
+      ustensils: ['casserole'],
+      ingredients : ['beurre']
     };
 
     this.results = this.recipes; // Stocke les résultats
   }
 
-  //----- Récupération listes dropdown ------------------------------------------------------------------------------------------
+  //----- Récupération listes dropdown -----//
 
   getIngredientsList() {
     let array = [];
@@ -45,9 +45,12 @@ export class DataManagerV1 {
         if (array.indexOf(ustensil) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
       });
     });
+    array = array.map(word => word[0].toUpperCase() + word.substring(1));
     array.sort();
     return array
   }
+
+  //----- Ajout/Retrait filtres -----//
 
   /**
    * Ajoute le filtre au tableau filters
@@ -56,10 +59,10 @@ export class DataManagerV1 {
    * @return  {void} 
    */
   addFilter(type, value){
-    if (type == 'text') this.filters.text = value.toLowerCase();
+    if (type == 'input') this.filters.input = [value.toLowerCase()];
     else this.filters[type].push(value.toLowerCase());
-    //this.sort();
-    //this.displayResults();
+    console.log(this.filters.input);
+
   }
   /**
    * retire le filtre au tableau filters
@@ -68,28 +71,31 @@ export class DataManagerV1 {
    * @return  {void}
    */
   removeFilter(type, value){ 
-    if (type =='text') this.filters.text = "";
+    if (type =='input') this.filters.input = [];
     else this.filters[type].splice(this.filters[type].indexOf(value.toLowerCase()),1);
-    this.sort();
-    this.displayResults();
   }
+
+  //----- Update Page Content -----//
 
   /**
    * Affiche les résultats et met à jour les listes des dropdowns
    *
    * @return  {void}
    */
-  displayResults() {
+  updatePageContent() {
+    this.getResults();
     globalThis.resultsContainer.displayResults(this.results);
     globalThis.updateLists();
   }
+
+  //----- Récupération des résultats-----//
 
   /**
    * Trie les recettes en fonction des filtres et stocke les résultats obtenus dans le tableau results
    *
    * @return  {void}
    */
-  sort() {
+  getResults() {
     let arr1 = this.sortByInput();                    // Les recettes triées par texte
     let arr2 = this.sortByIngredients(this.recipes);  // Les recettes triées par ingrédients
     let arr3 = this.sortByAppliance(this.recipes);    // Les recettes triées par appareil
@@ -105,8 +111,8 @@ export class DataManagerV1 {
 
     if (matchingValues.length == 0) this.results = [];
     else this.results = matchingValues;
+    console.log('V1', this.results);
   }
-
   /**
    * Compare plusieurs tableaux et retourne un tableau contenant les valeurs similaires
    *
@@ -126,11 +132,8 @@ export class DataManagerV1 {
     return matchingValues;
   }
   
-  /**
-   * Retourne les recettes correspondantes à la recherche via input
-   *
-   * @return  {array} un tableau de recettes
-   */
+  //------ Fonctions de recherche -------------------------------------------------------------------------------------------
+
   sortByInput() {
     let arr1 = this.sortIngByText(this.recipes);
     let arr2 = this.sortByName(this.recipes);
@@ -141,18 +144,29 @@ export class DataManagerV1 {
 
     return results;
   }
-
-  //------ Recherche par catégorie -------------------------------------------------------------------------------------------
-
   sortIngByText(array) {
     let results = [];
     array.forEach(recipe => {
      recipe.ingredients.forEach(ingredient => {
-       if (ingredient.ingredient.toLowerCase().includes(this.filters.text) && results.indexOf(recipe) == -1) results.push(recipe);
+       if (ingredient.ingredient.toLowerCase().includes(this.filters.input) && results.indexOf(recipe) == -1) results.push(recipe);
      });
     })
     return results;
  
+  }
+  sortByName(array) {
+    let results = [];
+    array.forEach(recipe => {
+      if (recipe.name.toLowerCase().includes(this.filters.input)) results.push(recipe)
+    })
+    return results;
+  }
+  sortByDesciption(array) {
+    let results = [];
+    array.forEach(recipe => {
+      if (recipe.description.toLowerCase().includes(this.filters.input)) results.push(recipe)
+    })
+    return results;
   }
   sortByIngredients(array) {
     let arrays = [];
@@ -160,7 +174,7 @@ export class DataManagerV1 {
       let arr = [];
       array.forEach(recipe => {
         recipe.ingredients.forEach(ingredient => {
-          if (ingredient.ingredient.toLowerCase().includes(this.filters.ingredients[i]) && arr.indexOf(recipe) == -1) arr.push(recipe);
+          if ((ingredient.ingredient.toLowerCase() == this.filters.ingredients[i]) && arr.indexOf(recipe) == -1) arr.push(recipe);
         });
       })
       arrays.push(arr);
@@ -171,7 +185,7 @@ export class DataManagerV1 {
   sortByAppliance(array) {
     let results = [];
     array.forEach(recipe => {
-      if (this.filters.appliances.includes(recipe.appliance.toLowerCase()) && results.indexOf(recipe) == -1) results.push(recipe);
+      if ((this.filters.appliances == recipe.appliance.toLowerCase()) && results.indexOf(recipe) == -1) results.push(recipe);
     })
     return results;
   }
@@ -181,26 +195,12 @@ export class DataManagerV1 {
       let arr = [];
       array.forEach(recipe => {
         recipe.ustensils.forEach(ustensil => {
-          if (ustensil.includes(this.filters.ustensils[i]) && arr.indexOf(recipe) == -1) arr.push(recipe);
+          if ((ustensil == this.filters.ustensils[i]) && arr.indexOf(recipe) == -1) arr.push(recipe);
         });
       })
       arrays.push(arr);
     }
     let results = this.getMatchingValues(arrays);
-    return results;
-  }
-  sortByName(array) {
-    let results = [];
-    array.forEach(recipe => {
-      if (recipe.name.toLowerCase().includes(this.filters.text)) results.push(recipe)
-    })
-    return results;
-  }
-  sortByDesciption(array) {
-    let results = [];
-    array.forEach(recipe => {
-      if (recipe.description.toLowerCase().includes(this.filters.text)) results.push(recipe)
-    })
     return results;
   }
 

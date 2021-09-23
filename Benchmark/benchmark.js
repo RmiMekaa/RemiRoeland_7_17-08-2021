@@ -3,6 +3,7 @@ import { DataManagerV1 } from "./dataManagerV1.js";
 
 const settings = {
   filters: {
+    input:["choco"],
     appliances: ["four"],
     ustensils: ["casserole"],
     ingredients: ["beurre"]
@@ -19,25 +20,22 @@ window.onload = ()=>{
 class Comparatif{
   constructor(settings){
     this.settings = settings;
-    this.algo  = new DataManager();
+    this.algoV2  = new DataManager();
     this.algoV1 = new DataManagerV1();
-    this.algoV1.addFilter("text", "choco");
-    this.algo.addFilter("input", "choco");
     this.compare()
 
   }
 
   compare(){
-
     let tpsAlgo = 0;
     let tpsAlgoV1 = 0;
     let debut;
     for(let i=0; i< this.settings.repetitions; i++){
       debut = Date.now();
-      this.algoV1.sort();
+      this.algoV1.getResults();
       tpsAlgoV1 += Date.now() - debut;
       debut = Date.now();
-      this.algo.getFinalResults();
+      this.algoV2.getResults();
       tpsAlgo += Date.now() - debut;
     }
   

@@ -9,10 +9,10 @@ import { HashTables } from "./hashTables.js";
     this.allRecipes = this.getAllRecipesIds();
 
     this.filters = {
-      input : [],
-      ingredients : [],
-      appliances : [],
-      ustensils : []
+      input : ['choco'],
+      appliances : ['four'],
+      ustensils: ['casserole'],
+      ingredients : ['beurre']
     }
     this.resultsBy = {
       input : [],
@@ -149,6 +149,7 @@ import { HashTables } from "./hashTables.js";
     let filtersAreEmpty = this.checkFiltersContent();
     if (filtersAreEmpty) return this.allRecipes;
     this.getResultsByCategory();
+    console.log('V2', this.getCrossResults());
     return this.getCrossResults();  
   }
 

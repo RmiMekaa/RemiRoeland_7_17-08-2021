@@ -21,7 +21,7 @@ searchBar.addEventListener('keyup', () => {
   if (searchString.length < 3) dataManager.filters.input = []; 
   else dataManager.addFilter('input', searchString);
 
-  dataManager.manageResults();
+  dataManager.updatePageContent();
 })
 
 // Actualisation des listes des dropdowns
