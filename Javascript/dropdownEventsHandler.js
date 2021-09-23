@@ -13,7 +13,7 @@ export class DropdownEventsHandler {
    */
   listClickEvents(category, value, dropdown) {
     dataManager.addFilter(category, value);
-    dataManager.manageResults();
+    dataManager.updatePageContent();
     this.createTag(category, value);
     dropdown.removeAttribute('open');
   }
@@ -28,7 +28,7 @@ export class DropdownEventsHandler {
   tagClickEvents(category, el) {
     el.remove();
     dataManager.removeFilter(category, el.textContent);  
-    dataManager.manageResults();
+    dataManager.updatePageContent();
   }
   
   /**
