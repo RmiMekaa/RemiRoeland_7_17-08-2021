@@ -61,8 +61,6 @@ export class DataManager {
   addFilter(type, value){
     if (type == 'input') this.filters.input = [value.toLowerCase()];
     else this.filters[type].push(value.toLowerCase());
-    console.log(this.filters.input);
-
   }
   /**
    * retire le filtre au tableau filters
@@ -122,9 +120,9 @@ export class DataManager {
   getMatchingValues(array) {
     let matchingValues = []
     if (array.length > 0) {
-      matchingValues = array.shift().filter(function(v) {
+      matchingValues = array.shift().filter(function(object) {
         return array.every(function(recipes) {
-            return recipes.indexOf(v) !== -1;
+            return recipes.indexOf(object) !== -1;
         })
       })  
     }
