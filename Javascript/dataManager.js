@@ -9,13 +9,22 @@ export class DataManager {
     this.recipes = recipes; 
     
     this.filters = {
-      input : [],
+      input : ['choco'],
+      ingredients : [],
       appliances : [],
-      ustensils: [],
-      ingredients : []
+      ustensils: []
     };
 
+    this.resultsBy = {
+      input : [],
+      ingredients : [],
+      appliances : [],
+      ustensils: []
+    }
+
     this.results = this.recipes; // Stocke les résultats
+
+    this.loopThroughRecipes();
   }
 
   //----- Récupération listes dropdown -----//
@@ -94,21 +103,11 @@ export class DataManager {
    * @return  {void}
    */
   getResults() {
-    let arr1 = this.sortByInput();                    // Les recettes triées par texte
-    let arr2 = this.sortByIngredients(this.recipes);  // Les recettes triées par ingrédients
-    let arr3 = this.sortByAppliance(this.recipes);    // Les recettes triées par appareil
-    let arr4 = this.sortByUstensils(this.recipes);    // Les recettes triées par ustensiles
+    this.loopThroughRecipes();
 
-    let arrays = [];
-    if (arr1.length > 0) arrays.push(arr1);
-    if (arr2.length > 0) arrays.push(arr2);
-    if (arr3.length > 0) arrays.push(arr3);
-    if (arr4.length > 0) arrays.push(arr4);
-
-    let matchingValues = this.getMatchingValues(arrays);
-
-    if (matchingValues.length == 0) this.results = [];
-    else this.results = matchingValues;
+    if (this.filters.input.length > 0 && this.resultsBy.input.length == 0) this.results = [];
+    else this.results = this.crossResults();
+    console.log(this.results);
   }
   /**
    * Compare plusieurs tableaux et retourne un tableau contenant les valeurs similaires
@@ -117,88 +116,57 @@ export class DataManager {
    *
    * @return  {Array}  Le tableau contenant les valeurs similaires trouvées
    */
-  getMatchingValues(array) {
-    let matchingValues = []
-    if (array.length > 0) {
-      matchingValues = array.shift().filter(function(object) {
-        return array.every(function(recipes) {
+  crossResults() {
+    let arrays = [];
+    if (this.resultsBy.input.length > 0) arrays.push(this.resultsBy.input);
+    if (this.resultsBy.ingredients.length > 0) arrays.push(this.resultsBy.ingredients);
+    if (this.resultsBy.appliances.length > 0) arrays.push(this.resultsBy.appliances);
+    if (this.resultsBy.ustensils.length > 0) arrays.push(this.resultsBy.ustensils);
+
+    let crossResults = []
+    if (arrays.length > 0) {
+      crossResults = arrays.shift().filter(function(object) {
+        return arrays.every(function(recipes) {
             return recipes.indexOf(object) !== -1;
         })
       })  
     }
-    return matchingValues;
+    return crossResults;
   }
   
-  //------ Fonctions de recherche -------------------------------------------------------------------------------------------
+  //------ Recherche parmi les recettes -------------------------------------------------------------------------------------------
 
-  sortByInput() {
-    let arr1 = this.sortIngByText(this.recipes);
-    let arr2 = this.sortByName(this.recipes);
-    let arr3 = this.sortByDesciption(this.recipes);
+  loopThroughRecipes() {
+    this.resultsBy.input = [];
+    this.resultsBy.ingredients = [];
+    this.resultsBy.appliances = [];
+    this.resultsBy.ustensils = [];
 
-    let results = arr1.concat(arr2, arr3)
-    results = [...new Set(results)];
+    this.recipes.forEach(recipe => {
+      if (this.filters.input.length > 0) this.checkInputMatch(recipe);
+      this.checkAppliance(recipe);
+      this.checkUstensils(recipe);
+      this.checkIngredients(recipe);
+    });
+  }
 
-    return results;
+  checkInputMatch(recipe) {
+    if (recipe.name.toLowerCase().includes(this.filters.input) && this.resultsBy.input.indexOf(recipe) == -1) this.resultsBy.input.push(recipe);
+    else if (recipe.description.toLowerCase().includes(this.filters.input) && this.resultsBy.input.indexOf(recipe) == -1) this.resultsBy.input.push(recipe);
+    recipe.ingredients.forEach(ingredient => {
+      if (ingredient.ingredient.toLowerCase().includes(this.filters.input) && this.resultsBy.input.indexOf(recipe) == -1) this.resultsBy.input.push(recipe);
+    });
   }
-  sortIngByText(array) {
-    let results = [];
-    array.forEach(recipe => {
-     recipe.ingredients.forEach(ingredient => {
-       if (ingredient.ingredient.toLowerCase().includes(this.filters.input) && results.indexOf(recipe) == -1) results.push(recipe);
-     });
-    })
-    return results;
- 
+  checkAppliance(recipe) {
+    if (this.filters.appliances == recipe.appliance.toLowerCase()) this.resultsBy.appliances.push(recipe);
   }
-  sortByName(array) {
-    let results = [];
-    array.forEach(recipe => {
-      if (recipe.name.toLowerCase().includes(this.filters.input)) results.push(recipe)
-    })
-    return results;
+  checkUstensils(recipe) {
+    if (this.filters.ustensils.every(i => recipe.ustensils.includes(i))) this.resultsBy.ustensils.push(recipe);
   }
-  sortByDesciption(array) {
-    let results = [];
-    array.forEach(recipe => {
-      if (recipe.description.toLowerCase().includes(this.filters.input)) results.push(recipe)
-    })
-    return results;
-  }
-  sortByIngredients(array) {
-    let arrays = [];
-    for (let i=0; i < this.filters.ingredients.length; i++) {
-      let arr = [];
-      array.forEach(recipe => {
-        recipe.ingredients.forEach(ingredient => {
-          if ((ingredient.ingredient.toLowerCase() == this.filters.ingredients[i]) && arr.indexOf(recipe) == -1) arr.push(recipe);
-        });
-      })
-      arrays.push(arr);
-    }
-    let results = this.getMatchingValues(arrays);
-    return results;
-  }
-  sortByAppliance(array) {
-    let results = [];
-    array.forEach(recipe => {
-      if ((this.filters.appliances == recipe.appliance.toLowerCase()) && results.indexOf(recipe) == -1) results.push(recipe);
-    })
-    return results;
-  }
-  sortByUstensils(array) {
-    let arrays = [];
-    for (let i=0; i < this.filters.ustensils.length; i++) {
-      let arr = [];
-      array.forEach(recipe => {
-        recipe.ustensils.forEach(ustensil => {
-          if ((ustensil == this.filters.ustensils[i]) && arr.indexOf(recipe) == -1) arr.push(recipe);
-        });
-      })
-      arrays.push(arr);
-    }
-    let results = this.getMatchingValues(arrays);
-    return results;
+  checkIngredients(recipe) {
+    let recipeIngredients = [];
+    recipe.ingredients.forEach(ingredient => recipeIngredients.push(ingredient.ingredient.toLowerCase()));
+    if (this.filters.ingredients.every(i => recipeIngredients.includes(i))) this.resultsBy.ingredients.push(recipe);
   }
 
 }
