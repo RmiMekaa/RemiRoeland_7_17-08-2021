@@ -107,7 +107,6 @@ export class DataManager {
 
     if (this.filters.input.length > 0 && this.resultsBy.input.length == 0) this.results = [];
     else this.results = this.crossResults();
-    console.log(this.results);
   }
   /**
    * Compare plusieurs tableaux et retourne un tableau contenant les valeurs similaires
