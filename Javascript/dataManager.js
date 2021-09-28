@@ -9,10 +9,10 @@ import { HashTables } from "./hashTables.js";
     this.allRecipes = this.getAllRecipesIds();
 
     this.filters = {
-      input : ['choco'],
-      appliances : ['four'],
-      ustensils: ['casserole'],
-      ingredients : ['beurre']
+      input : [],
+      appliances : [],
+      ustensils: [],
+      ingredients : []
     }
     this.resultsBy = {
       input : [],
@@ -62,6 +62,7 @@ import { HashTables } from "./hashTables.js";
     this.results.forEach(id => {
       let recipe = this.recipes['recette_' + id];
       recipe.ustensils.forEach(ustensil => {
+        ustensil = ustensil[0].toUpperCase() + ustensil.substring(1);
         if ((array.indexOf(ustensil) == -1) && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
       });
     });
@@ -137,6 +138,7 @@ import { HashTables } from "./hashTables.js";
       filtersArray.forEach(string => results.push(hashTable[string]));
       results = this.getCrossValues(results);
     }
+    console.log(results);
     return results;
   }
 
