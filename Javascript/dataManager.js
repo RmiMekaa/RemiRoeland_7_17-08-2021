@@ -9,7 +9,7 @@ export class DataManager {
     this.recipes = recipes; 
     
     this.filters = {
-      input : ['choco'],
+      input : [],
       ingredients : [],
       appliances : [],
       ustensils: []
