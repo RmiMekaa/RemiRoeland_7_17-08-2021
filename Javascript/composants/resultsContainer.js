@@ -7,23 +7,38 @@ export class ResultsContainer {
     this.DOM.setAttribute('id', 'results-container')
     document.querySelector('main').appendChild(this.DOM);
 
-    this.displayResults(dataManager.allRecipes);
+    this.displayResults(dataManager.results);
   }
+
+  // /**
+  //  * Affiche les recettes
+  //  *
+  //  * @param   {array}  ids  Un tableau contenant des ids
+  //  *
+  //  * @return  {void}
+  //  */
+  // displayResults(ids) {
+  //   if (this.DOM.childNodes.length > 0) this.DOM.innerHTML = '';
+  //   if (ids.length == 0) this.displayMessage();
+  //   ids.forEach(id => {
+  //     let recipe = dataManager.recipes['recette_' + id];
+  //     new Recipe(recipe, this.DOM);
+  //   });
+  // }
 
   /**
    * Affiche les recettes
    *
-   * @param   {array}  ids  Un tableau contenant des ids
+   * @param   {array}  recipes  Un tableau contenant des recettes
    *
    * @return  {void}
    */
-  displayResults(ids) {
+   displayResults(recipes) {
     if (this.DOM.childNodes.length > 0) this.DOM.innerHTML = '';
-    if (ids.length == 0) this.displayMessage();
-    ids.forEach(id => {
-      let recipe = dataManager.recipes['recette_' + id];
-      new Recipe(recipe, this.DOM);
-    });
+    if (recipes.length == 0) this.displayMessage();
+    for (let i = 0; i < recipes.length; i++) {
+      new Recipe(recipes[i], this.DOM);
+    }
   }
 
   /**
