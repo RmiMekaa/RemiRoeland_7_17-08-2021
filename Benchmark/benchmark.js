@@ -16,6 +16,8 @@ window.onload = ()=>{
   testBtn.innerText = "lancer le test";
   testBtn.onclick = () => new Comparatif(settings);
   document.body.appendChild(testBtn);
+  const results = document.createElement("section");
+  document.body.appendChild(results);
 }
 
 class Comparatif {
@@ -43,10 +45,10 @@ class Comparatif {
       tpsAlgo += Date.now() - debut;
     }
   
-    document.body.appendChild(this.showResult(this.settings.repetitions, "original", tpsAlgoV1));
-    document.body.appendChild(this.showResult(this.settings.repetitions, "amélioré", tpsAlgo));
-  
-  
+    let results = document.querySelector('section');
+    results.innerHTML = '';
+    results.appendChild(this.showResult(this.settings.repetitions, "original", tpsAlgoV1));
+    results.appendChild(this.showResult(this.settings.repetitions, "amélioré", tpsAlgo));
   }
   
    showResult(repetitions, text, tps){
