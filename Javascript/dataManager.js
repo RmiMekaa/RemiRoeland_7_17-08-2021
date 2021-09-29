@@ -6,8 +6,6 @@ import { HashTables } from "./hashTables.js";
     this.hashTables = new HashTables();
     this.recipes = this.hashTables.recipesIndex;
 
-    this.allRecipes = this.getAllRecipesIds();
-
     this.filters = {
       input : [],
       appliances : [],
@@ -21,51 +19,36 @@ import { HashTables } from "./hashTables.js";
       ustensils : []
     }
 
-    this.results = this.allRecipes; 
+    this.results = Object.values(this.recipes); 
   }
 
-  /**
-   * Retourne la liste d'ingrédients disponibles
-   *
-   * @return  {array}
-   */
   getIngredientsList() {
     let array = [];
-    this.results.forEach(id => {
-      let recipe = this.recipes['recette_' + id];
+    this.results.forEach(recipe => {
       recipe.ingredients.forEach(ingredient => {
-        if ((array.indexOf(ingredient.ingredient) == -1) && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
+        if (array.indexOf(ingredient.ingredient) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
       });
     });
+    array.sort();
     return array
   }
-  /**
-   * Retourne la liste d'appareils disponibles
-   *
-   * @return  {array}
-   */
   getAppliancesList() {
     let array = [];
-    this.results.forEach(id => {
-      let recipe = this.recipes['recette_' + id];
-      if ((array.indexOf(recipe.appliance) == -1) && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
+    this.results.forEach(recipe => {
+      if (array.indexOf(recipe.appliance) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
     });
+    array.sort();
     return array;
   }
-  /**
-   * Retourne la liste d'ustensiles disponibles
-   *
-   * @return  {array}
-   */
   getUstensilsList() {
     let array = [];
-    this.results.forEach(id => {
-      let recipe = this.recipes['recette_' + id];
+    this.results.forEach(recipe => {
       recipe.ustensils.forEach(ustensil => {
-        ustensil = ustensil[0].toUpperCase() + ustensil.substring(1);
-        if ((array.indexOf(ustensil) == -1) && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
+        if (array.indexOf(ustensil) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
       });
     });
+    array = array.map(word => word[0].toUpperCase() + word.substring(1));
+    array.sort();
     return array
   }
   
@@ -80,7 +63,7 @@ import { HashTables } from "./hashTables.js";
   addFilter(category, string) {
     let filter = string.toLowerCase();
     switch (category) {
-      case 'input'       :  this.filters.input = [filter];            break;
+      case 'input'       :  this.filters.input.push(filter);          break;
       case 'appliances'  :  this.filters[category] = [filter];        break;
       case 'ingredients' :  this.filters.ingredients.push(filter);    break;
       case 'ustensils'   :  this.filters.ustensils.push(filter);
@@ -110,14 +93,31 @@ import { HashTables } from "./hashTables.js";
   }
   
   /**
+   * Récupère les résultats finaux à afficher sur la page
+   *
+   * @return  {array} Un tableau contenant des ids
+   */
+  getResults() {
+    let filtersAreEmpty = this.checkFiltersContent();
+    if (filtersAreEmpty) {
+      this.results = Object.values(this.recipes);
+      return;
+    }
+    else {
+      this.getResultsByCategory();
+      let idsResults = this.crossResults();  
+      this.results = this.getRecipesFromIds(idsResults);
+    }
+    console.log('V2', this.results);
+  }
+  
+  /**
    * Récupère les ids des recettes pour chaque catégorie de filtres
    *
    * @return  {void}
    */
   getResultsByCategory() {
-    if (!this.hashTables.input[this.filters.input]) this.resultsBy.input = [];
-    else this.resultsBy.input = this.getFromHash(this.filters.input, this.hashTables.input);
-
+    this.resultsBy.input = this.getFromHash(this.filters.input, this.hashTables.input);
     this.resultsBy.appliances = this.getFromHash(this.filters.appliances, this.hashTables.appliances);
     this.resultsBy.ingredients = this.getFromHash(this.filters.ingredients, this.hashTables.ingredients);
     this.resultsBy.ustensils = this.getFromHash(this.filters.ustensils, this.hashTables.ustensils);
@@ -132,27 +132,24 @@ import { HashTables } from "./hashTables.js";
    * @return  {array}   Les résultats
    */
   getFromHash(filtersArray, hashTable) {
-    let results = [];
-    if (filtersArray.length == 1) results = hashTable[filtersArray];
-    else {
-      filtersArray.forEach(string => results.push(hashTable[string]));
-      results = this.getCrossValues(results);
-    }
-    console.log(results);
-    return results;
+    let ids = [];
+    let error;
+    filtersArray.forEach(string => {
+      if (!hashTable[string]) return error = true;
+      ids.push(hashTable[string]);
+    })
+    if (error == true) ids = []
+    else ids = this.getCrossValues(ids);
+
+    return ids;
   }
 
-  /**
-   * Récupère les résultats finaux à afficher sur la page
-   *
-   * @return  {array} Un tableau contenant des ids
-   */
-  getResults() {
-    let filtersAreEmpty = this.checkFiltersContent();
-    if (filtersAreEmpty) return this.allRecipes;
-    this.getResultsByCategory();
-    this.results = this.getCrossResults();  
-    console.log('V2', this.results);
+  getRecipesFromIds(array) {
+    let recipes = [];
+    array.forEach(id => {
+      recipes.push(this.recipes['recette_' + id])
+    })
+    return recipes;
   }
 
   /**
@@ -160,7 +157,7 @@ import { HashTables } from "./hashTables.js";
    *
    * @return  {array}
    */
-  getCrossResults() {
+  crossResults() {
     let arrays = [];
     if (this.resultsBy.input.length > 0) arrays.push(this.resultsBy.input);
     if (this.resultsBy.ingredients.length > 0) arrays.push(this.resultsBy.ingredients);
@@ -188,17 +185,6 @@ import { HashTables } from "./hashTables.js";
       })  
     }
     return crossValues;
-  }
-
-  /**
-   * Récupère les ids de toutes les recettes
-   *
-   * @return  {array}
-   */
-  getAllRecipesIds() {
-    let array = [];
-    Object.values(this.recipes).forEach(recipe => array.push(recipe.id));
-    return array;  
   }
 
   /**

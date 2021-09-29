@@ -17,10 +17,18 @@ globalThis.dropdownEventsHandler = new DropdownEventsHandler();
 // Main Search input
 const searchBar = document.getElementById('searchBar');
 searchBar.addEventListener('keyup', () => {
-  let searchString = searchBar.value.toLowerCase();
-  if (searchString.length < 3) dataManager.filters.input = []; 
-  else dataManager.addFilter('input', searchString);
+  if (searchBar.value.length < 3) dataManager.filters.input = []; 
+  else {
+    dataManager.filters.input = []
+    let searchString = searchBar.value.split(' ');
+    searchString.forEach(substring => {
+      if (substring.length >= 3) dataManager.addFilter('input', substring)
+    });
+  }
 
+  //else dataManager.addFilter('input', searchBar.value.toLowerCase());
+
+  console.log(dataManager.filters);
   dataManager.updatePageContent();
 })
 
