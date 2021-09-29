@@ -1,4 +1,4 @@
-import { DataManager } from "../Javascript/dataManager.js";
+import { DataManagerV2 } from "./dataManagerV2.js";
 import { DataManagerV1 } from "./dataManagerV1.js";
 
 const settings = {
@@ -13,17 +13,21 @@ const settings = {
 
 window.onload = ()=>{
   const testBtn = document.createElement("button");
-  testBtn.innerText="lancer le test";
+  testBtn.innerText = "lancer le test";
   testBtn.onclick = () => new Comparatif(settings);
   document.body.appendChild(testBtn);
 }
-class Comparatif{
-  constructor(settings){
-    this.settings = settings;
-    this.algoV2  = new DataManager();
-    this.algoV1 = new DataManagerV1();
-    this.compare()
 
+class Comparatif {
+  constructor(settings) {
+    this.settings = settings;
+    this.algoV2  = new DataManagerV2();
+    this.algoV1 = new DataManagerV1();
+
+    this.algoV1.filters = this.settings.filters;
+    this.algoV2.filters = this.settings.filters;
+
+    this.compare()
   }
 
   compare(){
