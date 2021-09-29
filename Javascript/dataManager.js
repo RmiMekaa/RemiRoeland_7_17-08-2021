@@ -23,8 +23,6 @@ export class DataManager {
     }
 
     this.results = this.recipes; // Stocke les résultats
-
-    this.loopThroughRecipes();
   }
 
   //----- Récupération listes dropdown -----//
@@ -143,9 +141,9 @@ export class DataManager {
 
     this.recipes.forEach(recipe => {
       if (this.filters.input.length > 0) this.checkInputMatch(recipe);
-      this.checkAppliance(recipe);
-      this.checkUstensils(recipe);
-      this.checkIngredients(recipe);
+      if (this.filters.ingredients.length > 0) this.checkIngredients(recipe);
+      if (this.filters.appliances.length > 0) this.checkAppliance(recipe);
+      if (this.filters.ustensils.length > 0) this.checkUstensils(recipe);
     });
   }
 
@@ -156,16 +154,16 @@ export class DataManager {
       if (ingredient.ingredient.toLowerCase().includes(this.filters.input) && this.resultsBy.input.indexOf(recipe) == -1) this.resultsBy.input.push(recipe);
     });
   }
+  checkIngredients(recipe) {
+    let recipeIngredients = [];
+    recipe.ingredients.forEach(ingredient => recipeIngredients.push(ingredient.ingredient.toLowerCase()));
+    if (this.filters.ingredients.every(i => recipeIngredients.includes(i))) this.resultsBy.ingredients.push(recipe);
+  }
   checkAppliance(recipe) {
     if (this.filters.appliances == recipe.appliance.toLowerCase()) this.resultsBy.appliances.push(recipe);
   }
   checkUstensils(recipe) {
     if (this.filters.ustensils.every(i => recipe.ustensils.includes(i))) this.resultsBy.ustensils.push(recipe);
-  }
-  checkIngredients(recipe) {
-    let recipeIngredients = [];
-    recipe.ingredients.forEach(ingredient => recipeIngredients.push(ingredient.ingredient.toLowerCase()));
-    if (this.filters.ingredients.every(i => recipeIngredients.includes(i))) this.resultsBy.ingredients.push(recipe);
   }
 
 }
