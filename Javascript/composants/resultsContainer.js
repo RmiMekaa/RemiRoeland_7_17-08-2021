@@ -10,22 +10,6 @@ export class ResultsContainer {
     this.displayResults(dataManager.results);
   }
 
-  // /**
-  //  * Affiche les recettes
-  //  *
-  //  * @param   {array}  ids  Un tableau contenant des ids
-  //  *
-  //  * @return  {void}
-  //  */
-  // displayResults(ids) {
-  //   if (this.DOM.childNodes.length > 0) this.DOM.innerHTML = '';
-  //   if (ids.length == 0) this.displayMessage();
-  //   ids.forEach(id => {
-  //     let recipe = dataManager.recipes['recette_' + id];
-  //     new Recipe(recipe, this.DOM);
-  //   });
-  // }
-
   /**
    * Affiche les recettes
    *
