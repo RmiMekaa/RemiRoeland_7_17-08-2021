@@ -30,6 +30,7 @@ class Comparatif {
     this.algoV2.filters = this.settings.filters;
 
     this.compare()
+    //this.initV2();
   }
 
   compare(){
@@ -44,12 +45,30 @@ class Comparatif {
       this.algoV2.getResults();
       tpsAlgo += Date.now() - debut;
     }
+
+    console.log('résultats V1 :', this.algoV1.results);
+    console.log('résultats V2 :', this.algoV2.results);
   
     let results = document.querySelector('section');
     results.innerHTML = '';
     results.appendChild(this.showResult(this.settings.repetitions, "original", tpsAlgoV1));
     results.appendChild(this.showResult(this.settings.repetitions, "amélioré", tpsAlgo));
   }
+
+  initV2(){
+    let tpsAlgo = 0;
+    let debut;
+    for(let i=0; i< this.settings.repetitions; i++){
+      debut = Date.now();
+      this.algoV2.hashTables.init();
+      tpsAlgo += Date.now() - debut;
+    }
+  
+    let results = document.querySelector('section');
+    results.innerHTML = '';
+    results.appendChild(this.showResult(this.settings.repetitions, "init", tpsAlgo));
+  }
+
   
    showResult(repetitions, text, tps){
     const DOM = document.createElement("div");

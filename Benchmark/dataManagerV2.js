@@ -108,7 +108,6 @@ export class DataManagerV2 {
       let idsResults = this.crossResults();  
       this.results = this.getRecipesFromIds(idsResults);
     }
-    console.log('V2', this.results);
   }
   
   /**
