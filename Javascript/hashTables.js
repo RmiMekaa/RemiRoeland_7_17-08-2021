@@ -13,6 +13,12 @@ export class HashTables {
     this.ustensils = {}
 
     this.init();
+
+    console.log(this.input);
+    console.log(this.ingredients);
+    console.log(this.appliances);
+    console.log(this.ustensils);
+
   }
 
   /**
