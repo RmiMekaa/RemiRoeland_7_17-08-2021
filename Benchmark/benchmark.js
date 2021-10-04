@@ -73,7 +73,7 @@ class Comparatif {
    showResult(repetitions, text, tps){
     const DOM = document.createElement("div");
     DOM.innerHTML = `<h2>algo ${text}</h2>
-    <p>pour ${repetitions} itérations, il faut ${tps} milisecondes</p>
+    <p>pour ${repetitions} itérations, il faut ${tps} millisecondes</p>
     `;
     return DOM;
   
