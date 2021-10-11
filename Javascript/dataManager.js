@@ -44,7 +44,7 @@ import { HashTables } from "./hashTables.js";
     let array = [];
     this.results.forEach(recipe => {
       recipe.ustensils.forEach(ustensil => {
-        if (array.indexOf(ustensil) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
+        if (array.indexOf(ustensil.toLowerCase()) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil.toLowerCase());       
       });
     });
     array = array.map(word => word[0].toUpperCase() + word.substring(1));
