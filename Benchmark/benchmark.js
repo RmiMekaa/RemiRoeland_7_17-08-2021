@@ -6,7 +6,7 @@ const settings = {
     input:[],
     appliances: [],
     ustensils: [],
-    ingredients: ["lait de coco", "tomates"]
+    ingredients: []
   },
   repetitions: 1000
 }
