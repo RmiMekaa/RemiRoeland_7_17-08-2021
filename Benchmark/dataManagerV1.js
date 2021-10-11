@@ -109,8 +109,6 @@ export class DataManagerV1 {
   /**
    * Compare plusieurs tableaux et retourne un tableau contenant les valeurs similaires
    *
-   * @param   {Array}  array  Un tableau contenant plusieurs tableaux
-   *
    * @return  {Array}  Le tableau contenant les valeurs similaires trouvées
    */
   crossResults() {

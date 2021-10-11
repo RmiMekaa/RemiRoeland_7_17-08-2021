@@ -3,10 +3,10 @@ import { DataManagerV1 } from "./dataManagerV1.js";
 
 const settings = {
   filters: {
-    input:["choco"],
-    appliances: ["four"],
-    ustensils: ["casserole"],
-    ingredients: ["beurre"]
+    input:[],
+    appliances: [],
+    ustensils: [],
+    ingredients: ["lait de coco", "tomates"]
   },
   repetitions: 1000
 }
