@@ -25,10 +25,6 @@ searchBar.addEventListener('keyup', () => {
       if (substring.length >= 3) dataManager.addFilter('input', substring)
     });
   }
-
-  //else dataManager.addFilter('input', searchBar.value.toLowerCase());
-
-  console.log(dataManager.filters);
   dataManager.updatePageContent();
 })
 

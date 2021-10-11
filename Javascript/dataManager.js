@@ -108,7 +108,7 @@ import { HashTables } from "./hashTables.js";
       let idsResults = this.crossResults();  
       this.results = this.getRecipesFromIds(idsResults);
     }
-    console.log('V2', this.results);
+    console.log("results :", this.results);
   }
   
   /**
