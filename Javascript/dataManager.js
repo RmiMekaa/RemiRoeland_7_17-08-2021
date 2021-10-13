@@ -26,7 +26,7 @@ import { HashTables } from "./hashTables.js";
     let array = [];
     this.results.forEach(recipe => {
       recipe.ingredients.forEach(ingredient => {
-        if (array.indexOf(ingredient.ingredient) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
+        if (array.indexOf(ingredient.ingredient.toLowerCase()) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient.toLowerCase());       
       });
     });
     array.sort();
@@ -35,7 +35,7 @@ import { HashTables } from "./hashTables.js";
   getAppliancesList() {
     let array = [];
     this.results.forEach(recipe => {
-      if (array.indexOf(recipe.appliance) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
+      if (array.indexOf(recipe.appliance.toLowerCase()) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance.toLowerCase());       
     });
     array.sort();
     return array;

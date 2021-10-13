@@ -43,7 +43,7 @@ export class Dropdown {
     }
     list.sort();
     list.forEach(item => {
-      let listItem = '<li>' + item + '</li>';
+      let listItem = '<li>' + item[0].toUpperCase() + item.substring(1) + '</li>';
       ul.innerHTML += listItem;
     });
   }
