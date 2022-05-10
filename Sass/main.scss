@@ -79,6 +79,7 @@ input[type="search"]::-webkit-search-results-decoration {
     color: white;
 
     & .dropdown {
+        user-select: none;
         font-size: 1.125rem;
         width: fit-content;
         min-width: 10.6rem;
@@ -130,7 +131,7 @@ input[type="search"]::-webkit-search-results-decoration {
 }
 
 .ingredients-dropdown {
-    background-color: $ingredient-color;
+    background-color: yellow;
 }
 
 .appliances-dropdown {
