@@ -1,32 +1,32 @@
-import { HashTables } from "./hashTables.js";
-
-export class DataManager {
+import { HashTables } from "../Javascript/hashTables.js";
+  
+export class DataManagerV2 {
 
   constructor() {
     this.hashTables = new HashTables();
     this.recipes = this.hashTables.recipesIndex;
 
     this.filters = {
-      input: [],
-      appliances: [],
+      input : [],
+      appliances : [],
       ustensils: [],
-      ingredients: []
+      ingredients : []
     }
     this.resultsBy = {
-      input: [],
-      ingredients: [],
-      appliances: [],
-      ustensils: []
+      input : [],
+      ingredients : [],
+      appliances : [],
+      ustensils : []
     }
 
-    this.results = Object.values(this.recipes);
+    this.results = Object.values(this.recipes); 
   }
 
   getIngredientsList() {
     let array = [];
     this.results.forEach(recipe => {
       recipe.ingredients.forEach(ingredient => {
-        if (array.indexOf(ingredient.ingredient.toLowerCase()) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient.toLowerCase());
+        if (array.indexOf(ingredient.ingredient) == -1 && this.filters.ingredients.indexOf(ingredient.ingredient.toLowerCase()) == -1) array.push(ingredient.ingredient);       
       });
     });
     array.sort();
@@ -35,7 +35,7 @@ export class DataManager {
   getAppliancesList() {
     let array = [];
     this.results.forEach(recipe => {
-      if (array.indexOf(recipe.appliance.toLowerCase()) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance.toLowerCase());
+      if (array.indexOf(recipe.appliance) == -1 && this.filters.appliances.indexOf(recipe.appliance.toLowerCase()) == -1) array.push(recipe.appliance);       
     });
     array.sort();
     return array;
@@ -44,14 +44,14 @@ export class DataManager {
     let array = [];
     this.results.forEach(recipe => {
       recipe.ustensils.forEach(ustensil => {
-        if (array.indexOf(ustensil.toLowerCase()) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil.toLowerCase());
+        if (array.indexOf(ustensil) == -1 && this.filters.ustensils.indexOf(ustensil.toLowerCase()) == -1) array.push(ustensil);       
       });
     });
     array = array.map(word => word[0].toUpperCase() + word.substring(1));
     array.sort();
     return array
   }
-
+  
   /**
    * Ajoute un filtre au tableau correspondant
    *
@@ -63,10 +63,10 @@ export class DataManager {
   addFilter(category, string) {
     let filter = string.toLowerCase();
     switch (category) {
-      case 'input': this.filters.input.push(filter); break;
-      case 'appliances': this.filters[category] = [filter]; break;
-      case 'ingredients': this.filters.ingredients.push(filter); break;
-      case 'ustensils': this.filters.ustensils.push(filter);
+      case 'input'       :  this.filters.input.push(filter);          break;
+      case 'appliances'  :  this.filters[category] = [filter];        break;
+      case 'ingredients' :  this.filters.ingredients.push(filter);    break;
+      case 'ustensils'   :  this.filters.ustensils.push(filter);
     }
   }
   /**
@@ -78,7 +78,7 @@ export class DataManager {
    * @return  {void}            [return description]
    */
   removeFilter(category, string) {
-    this.filters[category].splice(this.filters[category].indexOf(string.toLowerCase()), 1);
+    this.filters[category].splice(this.filters[category].indexOf(string.toLowerCase()),1);
   }
 
   /**
@@ -91,7 +91,7 @@ export class DataManager {
     globalThis.updateLists();
     resultsContainer.displayResults(this.results);
   }
-
+  
   /**
    * Récupère les résultats finaux à afficher sur la page
    *
@@ -105,12 +105,11 @@ export class DataManager {
     }
     else {
       this.getResultsByCategory();
-      let idsResults = this.crossResults();
+      let idsResults = this.crossResults();  
       this.results = this.getRecipesFromIds(idsResults);
     }
-    console.log("results :", this.results);
   }
-
+  
   /**
    * Récupère les ids des recettes pour chaque catégorie de filtres
    *
@@ -180,9 +179,9 @@ export class DataManager {
     if (array.length > 0) {
       crossValues = array.shift().filter(id => {
         return array.every(arr => {
-          return arr.indexOf(id) !== -1;
+            return arr.indexOf(id) !== -1;
         })
-      })
+      })  
     }
     return crossValues;
   }
@@ -192,7 +191,7 @@ export class DataManager {
    *
    * @return  {boolean}
    */
-  checkFiltersContent() {
+  checkFiltersContent(){
     let isEmpty = true;
     Object.values(this.filters).forEach(value => {
       if (value.length > 0) return isEmpty = false;

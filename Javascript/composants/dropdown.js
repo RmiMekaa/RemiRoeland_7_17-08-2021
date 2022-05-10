@@ -36,14 +36,14 @@ export class Dropdown {
     let ul = this.DOM.querySelector('.dropdown-list');
     ul.innerHTML = '';
     let list;
-    let html ='';
     switch (this.category) {
-      case 'ingredients': list = globalThis.dataManager.getIngredientsList(); break;
-      case 'appliances': list = globalThis.dataManager.getAppliancesList(); break;
-      case 'ustensils': list = globalThis.dataManager.getUstensilsList();
+      case 'ingredients': list = dataManager.getIngredientsList(); break;
+      case 'appliances': list = dataManager.getAppliancesList(); break;
+      case 'ustensils': list = dataManager.getUstensilsList();
     }
+    list.sort();
     list.forEach(item => {
-      let listItem = '<li>' + item + '</li>';
+      let listItem = '<li>' + item[0].toUpperCase() + item.substring(1) + '</li>';
       ul.innerHTML += listItem;
     });
   }
@@ -54,9 +54,12 @@ export class Dropdown {
    * @return  {void} 
    */
   addListener() {
+    let dropdown = this.DOM;
     let list = this.DOM.querySelectorAll('.dropdown-list li');
     list.forEach(listItem => {
-      listItem.addEventListener('click', () => globalThis.dropdownEventsHandler.listClickEvents(this.category, listItem.textContent, this.DOM))
+      listItem.addEventListener('click', () => {
+        globalThis.dropdownEventsHandler.listClickEvents(this.category, listItem.textContent, dropdown);
+      })
     })
   }
 

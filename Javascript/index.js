@@ -1,7 +1,7 @@
-import { DataManager} from "./dataManager.js";
 import { Dropdown } from "./composants/dropdown.js";
 import { ResultsContainer } from "./composants/resultsContainer.js";
 import { DropdownEventsHandler } from "./dropdownEventsHandler.js";
+import { DataManager } from "./dataManager.js"
 
 globalThis.dataManager = new DataManager();
 globalThis.resultsContainer = new ResultsContainer();
@@ -17,31 +17,20 @@ globalThis.dropdownEventsHandler = new DropdownEventsHandler();
 // Main Search input
 const searchBar = document.getElementById('searchBar');
 searchBar.addEventListener('keyup', () => {
-  if (searchBar.value.length < 3) {
-    dataManager.removeFilter('input', null);
-    globalThis.resultsContainer.displayResults(dataManager.recipes);
-  }
+  if (searchBar.value.length < 3) dataManager.filters.input = [];
   else {
-    let searchString = searchBar.value.toLowerCase();
-    dataManager.addFilter('input',searchString);
+    dataManager.filters.input = []
+    let searchString = searchBar.value.split(' ');
+    searchString.forEach(substring => {
+      if (substring.length >= 3) dataManager.addFilter('input', substring)
+    });
   }
   dataManager.updatePageContent();
 })
 
-globalThis.updateLists = function() {
+// Actualisation des listes des dropdowns
+globalThis.updateLists = function () {
   ingDrop.updateList();
   appDrop.updateList();
   ustDrop.updateList();
 }
-
-
-
-
-
-
-
-
-
-
-
-

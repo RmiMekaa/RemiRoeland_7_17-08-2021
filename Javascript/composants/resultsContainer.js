@@ -7,7 +7,7 @@ export class ResultsContainer {
     this.DOM.setAttribute('id', 'results-container')
     document.querySelector('main').appendChild(this.DOM);
 
-    this.displayResults(globalThis.dataManager.recipes)
+    this.displayResults(dataManager.results);
   }
 
   /**
@@ -17,7 +17,7 @@ export class ResultsContainer {
    *
    * @return  {void}
    */
-  displayResults(recipes) {
+   displayResults(recipes) {
     if (this.DOM.childNodes.length > 0) this.DOM.innerHTML = '';
     if (recipes.length == 0) this.displayMessage();
     for (let i = 0; i < recipes.length; i++) {

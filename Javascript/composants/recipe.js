@@ -1,7 +1,7 @@
 export class Recipe {
 
   /**
-   * @type {array} un tableau contenant les recettes
+   * @type {Object} un objet recette
    */
   data;
 
