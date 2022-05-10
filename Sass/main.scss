@@ -32,30 +32,44 @@ header {
     }
 }
 
+.filterOptions-section {
+    display: flex;
+    flex-direction: column;
+}
+
 /*----- SearchBar -----*/
 
 .search-section {
     position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 4.3rem;
+    border-radius: 0.3rem;
+    background-color: $light-grey;
 
     & input {
-        width: 100%;
-        height: 4.3rem;
-        background-color: $light-grey;
+        background-color: transparent;
+        width: 90%;
         border: none;
-        padding: 1.4rem;
+        padding: 1.4rem 0 1.4rem 1.4rem;
         outline: none;
-        border-radius: 0.3rem;
         font-size: 1.125rem;
         color: black;
     }
 
+    & input:placeholder-shown {
+        text-overflow: ellipsis;
+    }
+
     & .search-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         color: black;
         font-size: 2rem;
-        position: absolute;
-        top: -25%;
-        right: 2%;
-        cursor: pointer;
+        height: 100%;
+        width: 4rem;
     }
 }
 
@@ -71,67 +85,68 @@ input[type="search"]::-webkit-search-results-decoration {
 
 #dropdowns-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     gap: 1.25rem;
     width: 100%;
-    height: 3.5rem;
     color: white;
+}
 
-    & .dropdown {
-        user-select: none;
-        font-size: 1.125rem;
-        width: fit-content;
-        min-width: 10.6rem;
-        height: fit-content;
-        border-radius: 0.3rem;
-        font-weight: bold;
-        z-index: 1000;
+.dropdown {
+    user-select: none;
+    font-size: 1.125rem;
+    width: 100%;
+    height: fit-content;
+    border-radius: 0.3rem;
+    font-weight: bold;
+    z-index: 1000;
+}
 
-        &[open] summary {
-            display: none;
-        }
-    }
+.dropdown[open] summary {
+    display: none;
+}
 
-    & summary {
-        text-transform: capitalize;
-        padding: 1rem;
-        display: flex;
-        justify-content: space-between;
-        cursor: pointer;
+summary {
+    max-width: 100%;
+    text-transform: capitalize;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
 
-        & img {
-            object-fit: contain;
-        }
-    }
-
-    & .dropdown-search-section {
-        display: flex;
-        padding-right: 1rem;
-
-        & input {
-            font-size: 1.125rem;
-            background-color: transparent;
-            border: none;
-            color: white;
-            outline: none;
-            padding: 1.25rem;
-            width: 100%;
-
-            &::placeholder {
-                color: white;
-                opacity: 50%;
-            }
-        }
-
-        & img {
-            object-fit: contain;
-        }
+    & img {
+        object-fit: contain;
     }
 }
 
+.dropdown-search-section {
+    max-width: 100%;
+    display: flex;
+    padding-right: 1rem;
+
+    & input {
+        font-size: 1.125rem;
+        background-color: transparent;
+        border: none;
+        color: white;
+        outline: none;
+        padding: 1.25rem;
+        width: 100%;
+
+        &::placeholder {
+            color: white;
+            opacity: 50%;
+        }
+    }
+
+    & img {
+        object-fit: contain;
+    }
+}
+
+
 .ingredients-dropdown {
-    background-color: yellow;
+    background-color: $ingredient-color;
 }
 
 .appliances-dropdown {
@@ -151,9 +166,7 @@ input[type="search"]::-webkit-search-results-decoration {
     padding: 0 1rem 1rem 1rem;
     list-style: none;
     display: grid;
-    row-gap: 0.6rem;
-    column-gap: 6.25rem;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr;
 
     & li {
         font-weight: 400;
@@ -166,10 +179,43 @@ input[type="search"]::-webkit-search-results-decoration {
     }
 }
 
+@media all and (min-width: 500px) {
+    .dropdown-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media all and (min-width: 700px) {
+    .dropdown-list {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
+@media all and (min-width: 1200px) {
+    #dropdowns-container {
+        flex-direction: row;
+        max-height: 56px;
+    }
+
+    .dropdown {
+        width: 170px;
+    }
+
+    .dropdown[open] {
+        width: 700px;
+    }
+}
+
+@media all and (min-width: 1200px) {
+    .dropdown-list {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+
 /*----- Recipes --------------------------------------------------------------------------*/
 
 #results-container {
-    margin: 3.1rem 0 6.2rem 0;
+    margin: 2.1rem 0 6.2rem 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 3.1rem;

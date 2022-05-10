@@ -4,10 +4,12 @@ body {
   margin: 0 auto;
   padding: 0 5% 0 5%;
   box-sizing: border-box;
-  font-family: "DM sans";
+  font-family: "DM sans", sans-serif;
 }
 
-p, h2, ul {
+p,
+h2,
+ul {
   margin: 0;
 }
 
@@ -27,28 +29,41 @@ header h1 {
   font-size: 2.25rem;
 }
 
+.filterOptions-section {
+  display: flex;
+  flex-direction: column;
+}
+
 /*----- SearchBar -----*/
 .search-section {
   position: relative;
-}
-.search-section input {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   height: 4.3rem;
-  background-color: #E7E7E7;
-  border: none;
-  padding: 1.4rem;
-  outline: none;
   border-radius: 0.3rem;
+  background-color: #E7E7E7;
+}
+.search-section input {
+  background-color: transparent;
+  width: 90%;
+  border: none;
+  padding: 1.4rem 0 1.4rem 1.4rem;
+  outline: none;
   font-size: 1.125rem;
   color: black;
 }
+.search-section input:placeholder-shown {
+  text-overflow: ellipsis;
+}
 .search-section .search-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: black;
   font-size: 2rem;
-  position: absolute;
-  top: -25%;
-  right: 2%;
-  cursor: pointer;
+  height: 100%;
+  width: 4rem;
 }
 
 /* clears the ‘X’ from Chrome */
@@ -62,40 +77,45 @@ input[type=search]::-webkit-search-results-decoration {
 /*----- Dropdowns -----------------------------------------------------------------------*/
 #dropdowns-container {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 1.25rem;
   width: 100%;
-  height: 3.5rem;
   color: white;
 }
-#dropdowns-container .dropdown {
+
+.dropdown {
+  user-select: none;
   font-size: 1.125rem;
-  width: fit-content;
-  min-width: 10.6rem;
+  width: 100%;
   height: fit-content;
   border-radius: 0.3rem;
   font-weight: bold;
   z-index: 1000;
 }
-#dropdowns-container .dropdown[open] summary {
+
+.dropdown[open] summary {
   display: none;
 }
-#dropdowns-container summary {
+
+summary {
+  max-width: 100%;
   text-transform: capitalize;
   padding: 1rem;
   display: flex;
   justify-content: space-between;
   cursor: pointer;
 }
-#dropdowns-container summary img {
+summary img {
   object-fit: contain;
 }
-#dropdowns-container .dropdown-search-section {
+
+.dropdown-search-section {
+  max-width: 100%;
   display: flex;
   padding-right: 1rem;
 }
-#dropdowns-container .dropdown-search-section input {
+.dropdown-search-section input {
   font-size: 1.125rem;
   background-color: transparent;
   border: none;
@@ -104,11 +124,11 @@ input[type=search]::-webkit-search-results-decoration {
   padding: 1.25rem;
   width: 100%;
 }
-#dropdowns-container .dropdown-search-section input::placeholder {
+.dropdown-search-section input::placeholder {
   color: white;
   opacity: 50%;
 }
-#dropdowns-container .dropdown-search-section img {
+.dropdown-search-section img {
   object-fit: contain;
 }
 
@@ -133,9 +153,7 @@ input[type=search]::-webkit-search-results-decoration {
   padding: 0 1rem 1rem 1rem;
   list-style: none;
   display: grid;
-  row-gap: 0.6rem;
-  column-gap: 6.25rem;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr;
 }
 .dropdown-list li {
   font-weight: 400;
@@ -146,9 +164,38 @@ input[type=search]::-webkit-search-results-decoration {
   text-decoration: underline;
 }
 
+@media all and (min-width: 500px) {
+  .dropdown-list {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media all and (min-width: 700px) {
+  .dropdown-list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+@media all and (min-width: 1200px) {
+  #dropdowns-container {
+    flex-direction: row;
+    max-height: 56px;
+  }
+
+  .dropdown {
+    width: 170px;
+  }
+
+  .dropdown[open] {
+    width: 700px;
+  }
+}
+@media all and (min-width: 1200px) {
+  .dropdown-list {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
 /*----- Recipes --------------------------------------------------------------------------*/
 #results-container {
-  margin: 3.1rem 0 6.2rem 0;
+  margin: 2.1rem 0 6.2rem 0;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 3.1rem;
@@ -205,7 +252,7 @@ input[type=search]::-webkit-search-results-decoration {
   font-weight: bold;
 }
 .recipe-content__heading .duration::before {
-  font-family: "Font Awesome 5 Free";
+  font-family: "Font Awesome 5 Free", sans-serif;
   font-weight: 100;
   content: "";
   margin-right: 0.25em;
@@ -263,7 +310,7 @@ input[type=search]::-webkit-search-results-decoration {
 }
 #tags-container .tag::after {
   display: block;
-  font-family: "Font Awesome 5 Free";
+  font-family: "Font Awesome 5 Free", sans-serif;
   font-weight: normal;
   font-size: 1.1rem;
   content: "";
