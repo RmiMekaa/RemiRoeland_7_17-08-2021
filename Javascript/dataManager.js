@@ -194,7 +194,7 @@ export class DataManager {
   checkFiltersContent() {
     let isEmpty = true;
     Object.values(this.filters).forEach(value => {
-      if (value.length > 0) return isEmpty = false;
+      if (value.length > 0) isEmpty = false;
     })
     return isEmpty;
   }
