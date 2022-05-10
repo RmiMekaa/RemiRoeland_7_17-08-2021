@@ -135,7 +135,7 @@ export class DataManager {
     let ids = [];
     let error;
     filtersArray.forEach(string => {
-      if (!hashTable[string]) return error = true;
+      if (!hashTable[string]) error = true;
       ids.push(hashTable[string]);
     })
     if (error == true) ids = []
