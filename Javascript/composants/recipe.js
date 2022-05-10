@@ -84,12 +84,12 @@ export class Recipe {
    */
   ingredientsList() {
     let list = "";
-    for (let i = 0; i < this.ingredients.length; i++) {
-      if (this.ingredients[i].unit == "grammes") this.ingredients[i].unit = "g";
+    for (let ingredient of this.ingredients) {
+      if (ingredient.unit == "grammes") ingredient.unit = "g";
 
-      if (!this.ingredients[i].quantity) list += `<li class="ingredient">${this.ingredients[i].ingredient}</li>`;
-      else if (this.ingredients[i].quantity && !this.ingredients[i].unit) list += `<li class="ingredient">${this.ingredients[i].ingredient}: <span class="quantity">${this.ingredients[i].quantity}</span></li>`;
-      else list += `<li class="ingredient">${this.ingredients[i].ingredient}: <span class="quantity">${this.ingredients[i].quantity}${this.ingredients[i].unit}</span></li>`;
+      if (!ingredient.quantity) list += `<li class="ingredient">${ingredient.ingredient}</li>`;
+      else if (ingredient.quantity && !ingredient.unit) list += `<li class="ingredient">${ingredient.ingredient}: <span class="quantity">${ingredient.quantity}</span></li>`;
+      else list += `<li class="ingredient">${ingredient.ingredient}: <span class="quantity">${ingredient.quantity}${ingredient.unit}</span></li>`;
     }
     return list;
   }
