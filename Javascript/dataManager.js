@@ -138,7 +138,7 @@ export class DataManager {
       if (!hashTable[string]) error = true;
       ids.push(hashTable[string]);
     })
-    if (error == true) ids = []
+    if (error) ids = []
     else ids = this.getCrossValues(ids);
 
     return ids;
