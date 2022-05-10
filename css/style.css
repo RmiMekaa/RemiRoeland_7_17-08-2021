@@ -298,6 +298,7 @@ summary img {
   margin-top: 1rem;
 }
 #tags-container .tag {
+  user-select: none;
   font-size: 0.875rem;
   font-weight: 700;
   display: flex;

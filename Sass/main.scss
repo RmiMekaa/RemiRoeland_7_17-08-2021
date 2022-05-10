@@ -332,6 +332,7 @@ summary {
     margin-top: 1rem;
 
     & .tag {
+        user-select: none;
         font-size: 0.875rem;
         font-weight: 700;
         display: flex;
