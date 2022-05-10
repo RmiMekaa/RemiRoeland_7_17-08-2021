@@ -28,11 +28,11 @@ export class HashTables {
   init() {
     this.recipes.forEach(recipe => {
       let id = recipe.id;
-      this.recipesIndex['recette_'+ id] = recipe;
+      this.recipesIndex['recette_' + id] = recipe;
       this.hashRecipe(recipe, id);
     })
   }
-  
+
   /**
    * Complète les tables de hachage
    *
@@ -41,34 +41,34 @@ export class HashTables {
    *
    * @return  {void}
    */
-  hashRecipe(recipe, id){
+  hashRecipe(recipe, id) {
     this.hashRecipeName(recipe, id);
     this.hashRecipeDescription(recipe, id);
-    this.hashRecipeIngredients(recipe, id);  
+    this.hashRecipeIngredients(recipe, id);
     this.hashRecipeUstensils(recipe, id);
     this.hashRecipeAppliance(recipe, id)
   }
 
   // Traitement des différentes propriétés
-  hashRecipeName(recipe, id){
+  hashRecipeName(recipe, id) {
     let substrings = this.sliceString(recipe.name.toLowerCase());
     substrings.forEach(substring => this.addToHash(substring, id, this.input));
   }
-  hashRecipeDescription(recipe, id){
+  hashRecipeDescription(recipe, id) {
     let substrings = this.sliceString(recipe.description.toLowerCase());
     substrings.forEach(substring => this.addToHash(substring, id, this.input));
   }
-  hashRecipeIngredients(recipe, id){
+  hashRecipeIngredients(recipe, id) {
     recipe.ingredients.forEach(ingredient => {
       this.addToHash(ingredient.ingredient.toLowerCase(), id, this.ingredients);
       let substrings = this.sliceString(ingredient.ingredient.toLowerCase());
       substrings.forEach(substring => this.addToHash(substring, id, this.input));
     });
   }
-  hashRecipeAppliance(recipe, id){
+  hashRecipeAppliance(recipe, id) {
     this.addToHash(recipe.appliance.toLowerCase(), id, this.appliances)
   }
-  hashRecipeUstensils(recipe, id){
+  hashRecipeUstensils(recipe, id) {
     recipe.ustensils.forEach(ustensil => {
       this.addToHash(ustensil.toLowerCase(), id, this.ustensils);
     });
@@ -84,8 +84,8 @@ export class HashTables {
    * @return  {void}
    */
   addToHash(key, id, destination) {
-    if(!destination[key]) destination[key] = [];
-    if(destination[key].indexOf(id) == -1) destination[key].push(id);
+    if (!destination[key]) destination[key] = [];
+    if (destination[key].indexOf(id) == -1) destination[key].push(id);
   }
 
   /**
@@ -95,16 +95,16 @@ export class HashTables {
    * 
    * @return  {array}      [return description]
    */
-  sliceString(string){
+  sliceString(string) {
     let arrayOfSubstrings = [];
     let cleanString = this.cleanString(string);
     const words = cleanString.split(" ");
     words.forEach(word => {
       for (let i = 0; i < word.length; i++) {
-          for (let j = i + 1; j < word.length + 1; j++) {
-            let substring = word.slice(i, j);
-            if (substring.length > 2) arrayOfSubstrings.push(substring);
-          }
+        for (let j = i + 1; j < word.length + 1; j++) {
+          let substring = word.slice(i, j);
+          if (substring.length > 2) arrayOfSubstrings.push(substring);
+        }
       }
     })
     return arrayOfSubstrings;
@@ -116,9 +116,7 @@ export class HashTables {
    */
   cleanString(string) {
     const regex = /[!"#$%&'()*°+,-./:;<=>?@[\]^_`{|}~0123456789]/g;
-    const result = string.replace(regex, ' ');
-
-    return result;
+    return string.replace(regex, ' ');
   }
 
 }
