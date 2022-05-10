@@ -4,10 +4,12 @@ body {
   margin: 0 auto;
   padding: 0 5% 0 5%;
   box-sizing: border-box;
-  font-family: "DM sans";
+  font-family: "DM sans", sans-serif;
 }
 
-p, h2, ul {
+p,
+h2,
+ul {
   margin: 0;
 }
 
@@ -205,7 +207,7 @@ input[type=search]::-webkit-search-results-decoration {
   font-weight: bold;
 }
 .recipe-content__heading .duration::before {
-  font-family: "Font Awesome 5 Free";
+  font-family: "Font Awesome 5 Free", sans-serif;
   font-weight: 100;
   content: "";
   margin-right: 0.25em;
@@ -263,7 +265,7 @@ input[type=search]::-webkit-search-results-decoration {
 }
 #tags-container .tag::after {
   display: block;
-  font-family: "Font Awesome 5 Free";
+  font-family: "Font Awesome 5 Free", sans-serif;
   font-weight: normal;
   font-size: 1.1rem;
   content: "";
