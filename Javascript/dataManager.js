@@ -164,8 +164,7 @@ export class DataManager {
     if (this.resultsBy.appliances.length > 0) arrays.push(this.resultsBy.appliances);
     if (this.resultsBy.ustensils.length > 0) arrays.push(this.resultsBy.ustensils);
 
-    let crossResults = this.getCrossValues(arrays);
-    return crossResults;
+    return this.getCrossValues(arrays);
   }
 
   /**
