@@ -17,11 +17,11 @@ export class ResultsContainer {
    *
    * @return  {void}
    */
-   displayResults(recipes) {
+  displayResults(recipes) {
     if (this.DOM.childNodes.length > 0) this.DOM.innerHTML = '';
     if (recipes.length == 0) this.displayMessage();
-    for (let i = 0; i < recipes.length; i++) {
-      new Recipe(recipes[i], this.DOM);
+    for (let recipe of recipes) {
+      new Recipe(recipe, this.DOM);
     }
   }
 
@@ -36,5 +36,5 @@ export class ResultsContainer {
     message.innerHTML = 'Désolé, nous n\'avons pas trouvé de recette correspondant à vos critères. </br> Vous pouvez chercher \"tarte aux pommes\", \"poisson\", etc.';
     this.DOM.appendChild(message);
   }
-  
+
 }
